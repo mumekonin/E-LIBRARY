@@ -13,5 +13,7 @@ export class UsersSchema {
   password: string;
   @Prop({default:'student'})
   role: string;
+ @Prop({default:null,type:String})
+  refreshToken: string| null;
 }
 export const userSchema = SchemaFactory.createForClass(UsersSchema);

@@ -196,7 +196,7 @@ export class UserService {
     return { message: 'password changed successfully' };
   }
   //update librarian profile only by admin
-  async updateLibrarianProfile(currentUserId: string,librarianId, updateUserProfileDto: UpdateUserProfileDto) {
+  async updateLibrarianProfile(currentUserId: string,librarianId:string, updateUserProfileDto: UpdateUserProfileDto) {
           const  currentUser=await this.userModule.findById(currentUserId);
           //find current user from db
           if(!currentUser){
@@ -240,5 +240,69 @@ export class UserService {
             email: updatedLibrarian.email,
           }
           return updatedLibrarianProfile;
+  }
+  //delete user account by admin
+  async deleteUserAccount(currentUserId:string, userIdToDelete:string){
+    //find current user from db
+    const currrentUser = await this.userModule.findById(currentUserId);
+    if(!currrentUser){
+      throw new BadRequestException('current user not found');
+    }
+    //check if the current user is admin
+    if(currrentUser.role !=='admin'){
+      throw new ForbiddenException('only admin can delete user account');
+     }
+    //prevent admin from deleting own account
+    if(currentUserId === userIdToDelete){
+      throw new ForbiddenException('admin cannot delete own account');
+    }
+    //find user to delete
+    const userToDelete = await this.userModule.findById(userIdToDelete);
+    if(!userToDelete){
+      throw new BadRequestException('user to delete not found');
+    }
+    //delete user
+    const deletedUser = await this.userModule.findByIdAndDelete(userIdToDelete);
+    return { 
+      message: 'user account deleted successfully'
+     };
+  }
+  //fetch all users by role by admin
+  async fetchAllUsersByRole(currentUserID:string,role:string){
+       const currentUser = await this.userModule.findById(currentUserID);
+       if(!currentUser){
+        throw new BadRequestException('current user not found');
+       }
+        //check if the current user is admin
+        if(currentUser.role !=='admin'){
+          throw new ForbiddenException('only admin can fetch users by role');
+         }
+        const users = await this.userModule.find({role:role});
+        if(!users||users.length===0){
+          throw new BadRequestException(`no users found with role: ${role}`);
+        }
+        //map users to user response
+        const usersResponse:UserResponse[]=users.map((user)=>{
+          return {
+            id:user._id.toString(),
+            firstName:user.firstName,
+            lastName:user.lastName,
+            username:user.username,
+            role:user.role,
+            email:user.email
+          }
+        });
+        return usersResponse;
+  }
+  //logout user
+  async logoutUser(currentUserId: string) {
+    const user = await this.userModule.findById(currentUserId);
+    if (!user) {
+      throw new BadRequestException('user not found');
+    }
+    user.refreshToken=null;
+    await user.save();
+    return { message: 'user logged out successfully' };
+
   }
 }
