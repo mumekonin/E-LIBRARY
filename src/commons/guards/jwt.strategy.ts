@@ -8,12 +8,12 @@ export class JwtStrategy extends PassportStrategy(Strategy){//create custom stra
         const strategyOptions: StrategyOptions = {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),//tell the passport where to find the token
             ignoreExpiration: false,//reject expired token automaticaliy 
-            secretOrKey: "jjdjsjdjfjdfjisosoirjifrijijjsposdfkpseiutjcjaspfmsr"
+            secretOrKey: "jkfjnksdfnsjkfnfsajfnabggfdgfnmmmmnnnsnjj"
         };
         super(strategyOptions); //send the config  passport stategy constructors 
     }
     async validate(payload: any){
-        const { exp, iat, nbf, sub, ...userInfo } = payload;
+        const { exp, iat, nbf, sub, role, ...userInfo } = payload;
         console.log("🚀 ~ JwtStrategy ~ validate ~ rest:", userInfo)
         return userInfo;
     }

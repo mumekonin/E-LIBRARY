@@ -62,9 +62,15 @@ export class UserService {
 
     return { token: generateJwtToken };
   }
-  async createLibrarianAccount(usersDto: UsersDto, currentUser: UsersSchema) {
+  async createLibrarianAccount(usersDto: UsersDto, currentUser:any) {
+    //find current user from db
+    const user = await this.userModule.findById(currentUser);
+    console.log(user?.role)
+    if (!user) {
+      throw new BadRequestException('current user not found');
+    }
     //check if the current user is admin 
-    if (currentUser.role !== 'admin') {
+    if (user.role !== 'admin') {
       throw new ForbiddenException('Only admin can create librarian');
     }
     //check if the librarian already  
