@@ -2,16 +2,18 @@ import { BadRequestException, ForbiddenException, Injectable } from "@nestjs/com
 import { Model } from "mongoose";
 import { UsersSchema } from "../schema/users.schema";
 import { InjectModel } from "@nestjs/mongoose";
-import { LoginDto, UsersDto } from "../dtos/users.dto";
+import { ChangePasswordDto, LoginDto, UpdateUserProfileDto, UsersDto } from "../dtos/users.dto";
 import * as bcrypt from 'bcrypt';
 import { UserResponse } from "../responses/users.respnses";
 import { commonUtils } from "src/commons/utils";
+import { MESSAGES } from "@nestjs/core/constants";
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(UsersSchema.name)
     private readonly userModule: Model<UsersSchema>
   ) { }
+  //create user account
   async createUserAccount(usersDto: UsersDto) {
     //CHECK IF THE USER IS EXISTS
     const userExists = await this.userModule.findOne({ username: usersDto.username.toLowerCase() });
@@ -35,6 +37,7 @@ export class UserService {
     const savedUser = await newUser.save();
     //map to user response interceptor
     const UserResponse: UserResponse = {
+      id: savedUser._id.toString(),
       firstName: savedUser.firstName,
       lastName: savedUser.lastName,
       username: savedUser.username,
@@ -42,6 +45,7 @@ export class UserService {
     };
     return UserResponse;
   }
+  //user login
   async userLogin(loginDto: LoginDto) {
     //check if the user exists
     const user = await this.userModule.findOne({ username: loginDto.username.toLowerCase() });
@@ -53,16 +57,15 @@ export class UserService {
     if (!isPasswordValid) {
       throw new BadRequestException('invalid password');
     }
-    const jwtData ={
-       userId:user._id,
-       username:user.username
+    const jwtData = {
+      userId: user._id,
+      username: user.username
     };
-
     const generateJwtToken = commonUtils.generateJwtToken(jwtData);
-
     return { token: generateJwtToken };
   }
-  async createLibrarianAccount(usersDto: UsersDto, currentUser:any) {
+  //create librarian account
+  async createLibrarianAccount(usersDto: UsersDto, currentUser: any) {
     //find current user from db
     const user = await this.userModule.findById(currentUser);
     console.log(user?.role)
@@ -95,11 +98,147 @@ export class UserService {
     const savedLibrarian = await newLibrarian.save();
     //map to user response interceptor
     const UserResponse: UserResponse = {
+      id: savedLibrarian._id.toString(),
       firstName: savedLibrarian.firstName,
       lastName: savedLibrarian.lastName,
       username: savedLibrarian.username,
       role: savedLibrarian.role,
     };
     return UserResponse;
+  }
+  //get user profile
+  async getMyProfile(userId: string) {
+    const user = await this.userModule.findById(userId);
+    if (!user) {
+      throw new BadRequestException('user not found');
+    }
+    const userProfile: UserResponse = {
+      id: user._id.toString(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      role: user.role
+    }
+    return userProfile;
+  }
+  //update user profile
+  async updatemyProfile(id: string, updateUserProfileDto: UpdateUserProfileDto) {
+    const user = await this.userModule.findById(id);
+    if (!user) {
+      throw new BadRequestException('user not found');
+    }
+    //check the role
+    if (user.role !== 'student') {
+      throw new ForbiddenException('only student can update their profile');
+    }
+    //update fields
+    if (updateUserProfileDto.firstName) {
+      user.firstName = updateUserProfileDto.firstName;
+    }
+    if (updateUserProfileDto.lastName) {
+      user.lastName = updateUserProfileDto.lastName;
+    }
+    if (updateUserProfileDto.username) {
+      //check if the username is exist
+      const usernameExiists = await this.userModule.findOne({ username: updateUserProfileDto.username.toLowerCase() });
+      if (usernameExiists) {
+        throw new BadRequestException('username already exists');
+      }
+      user.username = updateUserProfileDto.username;
+    }
+    if (updateUserProfileDto.email) {
+      user.email = updateUserProfileDto.email;
+    }
+    //save the updated user to the database
+    const updatedser = await user.save();
+    //map to user response
+    const updatedUserProfile: UserResponse = {
+      id: updatedser._id.toString(),
+      firstName: updatedser.firstName,
+      lastName: updatedser.lastName,
+      username: updatedser.username,
+      email: updatedser.email,
+    }
+    return updatedUserProfile;
+  }
+  async chnageUserPassword(id:string, changePasswordDto:ChangePasswordDto){
+    const user = await this.userModule.findById(id);
+    if(!user){
+      throw new BadRequestException('user not found');
+    }
+    if (changePasswordDto.password) {
+      //validate current password
+      const isMatch = await bcrypt.compare(changePasswordDto.password, user.password);
+      if (!isMatch) {
+        throw new BadRequestException('current password is incorrect');
+      }
+      //validate new password and confirm password
+      const newPassword = changePasswordDto.newPassword;
+      const confirmPassword = changePasswordDto.confirmPassword;
+      if (!newPassword || !confirmPassword) {
+        throw new BadRequestException('new password and confirm password are required');
+      }
+      if (changePasswordDto.newPassword !== changePasswordDto.confirmPassword) {
+        throw new BadRequestException('the passwords do not match');
+      }
+      //check if the new password is same as old password
+      const isSameAsOld = await bcrypt.compare(newPassword, user.password);
+      if (isSameAsOld) {
+        throw new BadRequestException(
+          'new password must be different from old password'
+        );
+      }
+      //hash the new password
+      const hashedPwd = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPwd;   
+    }
+    const updatedUser = await user.save();
+    return { message: 'password changed successfully' };
+  }
+  //update librarian profile only by admin
+  async updateLibrarianProfile(currentUserId: string,librarianId, updateUserProfileDto: UpdateUserProfileDto) {
+          const  currentUser=await this.userModule.findById(currentUserId);
+          //find current user from db
+          if(!currentUser){
+            throw new BadRequestException('current user not found');
+          }
+          //check if the current user is admin
+          if(currentUser.role!=='admin'){
+            throw new ForbiddenException('only admin can update librarian profile');
+          }
+          //find librarian by id
+          const librarian = await this.userModule.findById(librarianId);
+          if(!librarian){
+            throw new BadRequestException('librarian not found');
+          }
+          //update fields
+          if (updateUserProfileDto.firstName) {
+            librarian.firstName = updateUserProfileDto.firstName;
+          }
+          if (updateUserProfileDto.lastName) {
+            librarian.lastName = updateUserProfileDto.lastName;
+          }
+          if (updateUserProfileDto.username) {
+            //check if the username is exist
+            const usernameExiists = await this.userModule.findOne({ username: updateUserProfileDto.username.toLowerCase() });
+            if (usernameExiists) {
+              throw new BadRequestException('username already exists');
+            }
+            librarian.username = updateUserProfileDto.username;
+          }
+          if (updateUserProfileDto.email) {
+            librarian.email = updateUserProfileDto.email;
+          }
+          //save the updated librarian to the database
+          const updatedLibrarian = await librarian.save();
+          //map to user response
+          const updatedLibrarianProfile: UserResponse = {
+            id: updatedLibrarian._id.toString(),
+            firstName: updatedLibrarian.firstName,
+            lastName: updatedLibrarian.lastName,
+            username: updatedLibrarian.username,
+            email: updatedLibrarian.email,
+          }
+          return updatedLibrarianProfile;
   }
 }

@@ -1,6 +1,8 @@
 export class  UserResponse{
-  firstName: string;
-  lastName: string;
-  username: string;
-  role: string;
+  id?:string;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  role?: string;
+  email?:string;
 }
