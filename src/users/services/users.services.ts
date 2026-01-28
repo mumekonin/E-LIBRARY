@@ -6,7 +6,6 @@ import { ChangePasswordDto, LoginDto, UpdateUserProfileDto, UsersDto } from "../
 import * as bcrypt from 'bcrypt';
 import { UserResponse } from "../responses/users.respnses";
 import { commonUtils } from "src/commons/utils";
-import { MESSAGES } from "@nestjs/core/constants";
 @Injectable()
 export class UserService {
   constructor(

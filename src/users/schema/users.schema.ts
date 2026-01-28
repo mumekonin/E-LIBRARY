@@ -15,5 +15,6 @@ export class UsersSchema {
   role: string;
  @Prop({default:null,type:String})
   refreshToken: string| null;
+  
 }
 export const userSchema = SchemaFactory.createForClass(UsersSchema);
