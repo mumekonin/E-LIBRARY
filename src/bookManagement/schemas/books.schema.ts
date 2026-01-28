@@ -11,7 +11,6 @@ export class BooksSchema {
   @Prop()
   category: string;
   // where the file is stored
-  
   @Prop()
   filePath: string;
   @Prop()
@@ -22,5 +21,7 @@ export class BooksSchema {
   createdAt: Date;
   @Prop()
   updatedAt: Date;
+ @Prop({ type: String, unique: true })
+  fileHash: string;
 }
 export const bookSchema = SchemaFactory.createForClass(BooksSchema);
