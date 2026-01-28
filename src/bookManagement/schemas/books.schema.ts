@@ -11,7 +11,8 @@ export class BooksSchema {
   @Prop()
   category: string;
   // where the file is stored
-  @Prop({ required: true })
+  
+  @Prop()
   filePath: string;
   @Prop()
   fileType: string; // pdf, epub

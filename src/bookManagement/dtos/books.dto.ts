@@ -3,8 +3,8 @@ import { IsOptional, IsString } from "class-validator";
 
 export class CreateBookDto {
   @IsString()
+  @Type(() => String)
   title: string;
-
   @IsOptional()
   @IsString()
   author?: string;
