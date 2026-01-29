@@ -78,4 +78,46 @@ export class BooksService {
     }
     return bookDetailResponse;
   }
-}
+  //updateBook
+  async updateBookFile(bookId: string, createBookDto: CreateBookDto, file: Express.Multer.File) {
+    //check if the book found in db
+    const book = await this.booksModel.findById(bookId);
+    if (!book) {
+      throw new BadRequestException("book is not found");
+    }
+    try{
+    //remove the old file from the storage
+    if (book.filePath && fs.existsSync(book.filePath)) {
+      fs.unlinkSync(book.filePath);
+    }
+    if (createBookDto.title) {
+      book.title = createBookDto.title
+    }
+    if (createBookDto.author) {
+      book.author = createBookDto.author;
+    }
+    if (createBookDto.description) {
+      book.description = createBookDto.description;
+    }
+    book.filePath = file.path;
+    book.fileSize = file.size;
+    book.fileType = file.mimetype;
+
+  const updatedBook = await book.save();
+  const updateBookResponse:BookResponse={
+    id:updatedBook._id.toString(),
+    title:updatedBook.title,
+    author:updatedBook.author,
+    description:updatedBook.description,
+    filetype:updatedBook.fileType,  
+    createdAt:updatedBook.createdAt,
+    updatedAt:updatedBook.updatedAt
+  }
+  return updateBookResponse;
+  }
+  catch(error){
+    throw new BadRequestException("Failed to update the book file");
+  }
+  }
+} 
+

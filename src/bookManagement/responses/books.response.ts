@@ -3,6 +3,7 @@ export class BookResponse {
   title: string
   author: string
   description: string
+  filetype?: string
   createdAt: Date
   updatedAt: Date
 }
