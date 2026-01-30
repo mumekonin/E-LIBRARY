@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Model } from "mongoose";
-import { BooksSchema } from "../schemas/books.schema";
-import { CreateBookDto } from "../dtos/books.dto";
-import { BookResponse } from "../responses/books.response";
+import { BooksSchema, CatagorySchema } from "../schemas/books.schema";
+import { CreateBookDto, CreateCategoryDto } from "../dtos/books.dto";
+import { BookResponse, CategoryResponse } from "../responses/books.response";
 import { InjectModel } from "@nestjs/mongoose";
 import { commonUtils } from "src/commons/utils";
 import * as fs from 'fs';
@@ -12,6 +12,8 @@ export class BooksService {
   constructor(
     @InjectModel(BooksSchema.name)
     private readonly booksModel: Model<BooksSchema>,
+    @InjectModel(CatagorySchema.name)
+    private readonly categoryModel:Model<CatagorySchema>
     //private readonly commonUtiles:commonUtils
   ) { }
   async createBook(createBookDto: CreateBookDto, file: Express.Multer.File) {
@@ -175,14 +177,53 @@ export class BooksService {
         fileSize: books.fileSize,
         filetype: books.fileType,
         updatedAt: books.updatedAt,
+        readUrl: `http://localhost:3000/books/read/${books._id}`, // dynamic read link
         downloadUrl: `http://localhost:3000/books/download/${books._id}`, // dynamic download link
       };
     });
     return booksResponse;
   }
+  //get book by id
   async getBookById(id: string) {
     const book = await this.booksModel.findById(id);
     if (!book) throw new NotFoundException('Book not found');
     return book;
+  }
+  async createCategory(categoryDto:CreateCategoryDto){
+   //check if category exists
+   const existingCategory = await this.categoryModel.findOne({name:categoryDto.name})
+   if(existingCategory){
+    throw new BadRequestException("category already exists");
+   }
+
+   const newCategory = new this.categoryModel({
+     name:categoryDto.name,
+     description:categoryDto.description
+   });
+   const savedCategory = await newCategory.save();
+   return{
+    id:savedCategory._id.toString(),
+    name:savedCategory.name,
+    description:savedCategory.description,
+    createdAt:savedCategory.createdAt,
+    updatedAt:savedCategory.updatedAt 
+   }
+  }
+
+  async getAllCategories(){
+    const categories = await this.categoryModel.find();
+    //check if categories found 
+    if(!categories || categories.length===0){
+      throw new NotFoundException("no categories found");
+    }
+    const categoriesResponse:CategoryResponse[] = categories.map((category)=>{
+      return {
+        id:category._id.toString(),
+        name:category.name,
+        description:category.description,
+        updatedAt:category.updatedAt
+      }
+    });
+    return categoriesResponse;
   }
 }

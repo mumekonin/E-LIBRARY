@@ -8,12 +8,17 @@ export class CreateBookDto {
   @IsOptional()
   @IsString()
   author?: string;
-
   @IsOptional()
   @IsString()
   description?: string;
-
   @IsOptional()
   @IsString()
   category?: string;
+}
+export class CreateCategoryDto{
+  @IsString()
+  name:string;
+  @IsOptional()
+  @IsString()
+  description?:string;
 }

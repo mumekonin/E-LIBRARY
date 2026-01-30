@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 @Schema({ timestamps: true })
 export class BooksSchema {
   @Prop()
-  title: string; 
+  title: string;
   @Prop()
   author: string;
   @Prop()
@@ -25,5 +25,18 @@ export class BooksSchema {
   fileHash?: string;
   @Prop()
   downloadUrl?: string;
+  @Prop()
+  readUrl?: string;
 }
 export const bookSchema = SchemaFactory.createForClass(BooksSchema);
+@Schema({ timestamps: true })
+export class CatagorySchema {
+  @Prop()
+  name: string;
+  @Prop()
+  description: string;
+  @Prop()
+  createdAt?: Date;
+  @Prop()
+  updatedAt?: Date;
+}export const catagorySchema = SchemaFactory.createForClass(CatagorySchema);

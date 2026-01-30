@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Get, UseInterceptors, UploadedFile, Param, Put, Delete, Query, NotFoundException, Res } from "@nestjs/common";
 import { BooksService } from "../services/books.service";
-import { CreateBookDto } from "../dtos/books.dto";
+import { CreateBookDto, CreateCategoryDto } from "../dtos/books.dto";
 import * as path from 'path';
 import { UploadFileInterceptor } from "uploads/upload.interceptor";
 import type { Response } from 'express';
@@ -44,13 +44,13 @@ export class BooksController {
     const result = await this.booksService.deleteBook(id);
     return result;
   }
-  //search book\
+  //search book
   @Get('search-books')
   async searchBooks(@Query('key') key: string) {
     const books = await this.booksService.searchBook(key.trim());
     return books;
   }
-
+  //download book
   @Get('download/:id')
   async downloadBook(@Param('id') id: string, @Res() res: Response) {
     //find the book data by id
@@ -60,7 +60,7 @@ export class BooksController {
       throw new NotFoundException('File path not found');
     }
     //! Convert stored path into an absolute path
-    const filePath = path.resolve( book.filePath);
+    const filePath = path.resolve(book.filePath);
     //check if the file exists
     if (!fs.existsSync(filePath)) {
       throw new NotFoundException('File not found on server');
@@ -71,5 +71,33 @@ export class BooksController {
         'Content-Disposition': `attachment; filename="${path.basename(filePath)}"`,
       },
     });
+  }
+  //read book
+  @Get('read/:id')
+  async readBook(@Param('id') id: string, @Res() res: Response) {
+    const book = await this.booksService.getBookById(id)
+    //create the file path
+    if (!book.filePath) {
+      throw new NotFoundException('File path not found');
+    }
+    //! Convert stored path into an absolute path
+    const filePath = path.resolve(book.filePath);
+    //check if the file exists
+    if (!fs.existsSync(filePath)) {
+      throw new NotFoundException('File not found on server');
+    }
+    return res.sendFile(filePath, {
+      headers: { 'Content-Disposition': 'inline' },
+    });
+  }
+  @Post('Create-category')
+  async createCategory(@Body()createCategoryDto:CreateCategoryDto){
+    const result = await this.booksService.createCategory(createCategoryDto);
+    return result;
+  }
+  @Get('get-all-categories')
+  async getAllCategories(){
+    const result = await this.booksService.getAllCategories();
+    return result;
   }
 }
