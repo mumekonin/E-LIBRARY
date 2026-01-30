@@ -5,15 +5,12 @@ export class CreateBookDto {
   @IsString()
   @Type(() => String)
   title: string;
-  @IsOptional()
   @IsString()
-  author?: string;
-  @IsOptional()
+  author: string;
   @IsString()
-  description?: string;
-  @IsOptional()
+  description: string;
   @IsString()
-  category?: string;
+  category: string;
 }
 export class CreateCategoryDto{
   @IsString()

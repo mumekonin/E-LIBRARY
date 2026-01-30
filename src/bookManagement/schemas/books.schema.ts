@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Types } from "mongoose";
 
 @Schema({ timestamps: true })
 export class BooksSchema {
@@ -8,8 +9,10 @@ export class BooksSchema {
   author: string;
   @Prop()
   description: string;
-  @Prop()
-  category?: string;
+
+  @Prop() // reference Category
+  category:string;
+
   // where the file is stored
   @Prop()
   filePath?: string;
@@ -29,14 +32,13 @@ export class BooksSchema {
   readUrl?: string;
 }
 export const bookSchema = SchemaFactory.createForClass(BooksSchema);
-@Schema({ timestamps: true })
 export class CatagorySchema {
   @Prop()
-  name: string;
+  name:string;
   @Prop()
   description: string;
   @Prop()
   createdAt?: Date;
   @Prop()
   updatedAt?: Date;
-}export const catagorySchema = SchemaFactory.createForClass(CatagorySchema);
+} export const catagorySchema = SchemaFactory.createForClass(CatagorySchema);

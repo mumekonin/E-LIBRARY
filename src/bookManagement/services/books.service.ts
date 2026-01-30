@@ -17,14 +17,21 @@ export class BooksService {
     //private readonly commonUtiles:commonUtils
   ) { }
   async createBook(createBookDto: CreateBookDto, file: Express.Multer.File) {
+
     const fileHash = commonUtils.generateFileHash(file);
     const existingBook = await this.booksModel.findOne({ fileHash });
     if (existingBook) {
       throw new BadRequestException("file is duplicated");
+    };
+    //check if category exists
+    const category = await this.categoryModel.findOne({name:createBookDto.category});
+    if (!category) {
+      throw new BadRequestException("category is not found");
     }
-    const newBook = new this.booksModel({
-      //check if the file is duplicated using file hash
+    const newBook = new this.booksModel({ 
       ...createBookDto, // include all DTO fields
+     
+      category: createBookDto.category,
       filePath: file.path,
       fileType: file.mimetype,
       fileSize: file.size,
@@ -37,6 +44,7 @@ export class BooksService {
       title: saveBooks.title,
       author: saveBooks.author,
       description: saveBooks.description,
+      category: saveBooks.category,
       filetype: saveBooks.fileType,
       createdAt: saveBooks.createdAt,
       updatedAt: saveBooks.updatedAt
@@ -54,6 +62,7 @@ export class BooksService {
         id: books._id.toString(),
         title: books.title,
         author: books.author,
+        category: books.category,
         description: books.description,
         filetype: books.fileType,
         createdAt: books.createdAt,
@@ -75,6 +84,7 @@ export class BooksService {
       title: bookToBeFind.title,
       author: bookToBeFind.author,
       description: bookToBeFind.description,
+      category: bookToBeFind.category,
       filetype: bookToBeFind.fileType,
       createdAt: bookToBeFind.createdAt,
       updatedAt: bookToBeFind.updatedAt
@@ -116,6 +126,7 @@ export class BooksService {
         id: updatedBook._id.toString(),
         title: updatedBook.title,
         author: updatedBook.author,
+        category: updatedBook.category,
         description: updatedBook.description,
         filetype: updatedBook.fileType,
         createdAt: updatedBook.createdAt,
@@ -153,9 +164,7 @@ export class BooksService {
     if (!key || typeof key !== 'string' || key.trim().length === 0) {
       throw new BadRequestException('Search key must be a non-empty string');
     }
-
     key = key.trim();
-
     const books = await this.booksModel.find({
       $or: [
         { title: { $regex: key, $options: 'i' } },

@@ -4,6 +4,7 @@ export class BookResponse {
   author: string;
   description: string;
   filetype?: string;
+  category: string;
   createdAt?: Date;
   updatedAt?: Date;
   sendFile?: string;
