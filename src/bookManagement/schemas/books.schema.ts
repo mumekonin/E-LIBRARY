@@ -9,19 +9,21 @@ export class BooksSchema {
   @Prop()
   description: string;
   @Prop()
-  category: string;
+  category?: string;
   // where the file is stored
   @Prop()
-  filePath: string;
+  filePath?: string;
   @Prop()
-  fileType: string; // pdf, epub
+  fileType?: string; // pdf, epub
   @Prop()
-  fileSize: number; // bytes
+  fileSize?: number; // bytes
   @Prop()
-  createdAt: Date;
+  createdAt?: Date;
   @Prop()
-  updatedAt: Date;
- @Prop({ type: String, unique: true })
-  fileHash: string;
+  updatedAt?: Date;
+  @Prop()
+  fileHash?: string;
+  @Prop()
+  downloadUrl?: string;
 }
 export const bookSchema = SchemaFactory.createForClass(BooksSchema);

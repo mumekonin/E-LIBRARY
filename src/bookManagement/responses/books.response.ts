@@ -4,6 +4,8 @@ export class BookResponse {
   author: string
   description: string
   filetype?: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt?: Date
+  updatedAt?: Date
+  sendFile?: string
+  downloadUrl?: string
 }
