@@ -127,9 +127,9 @@ export class UserService {
       throw new BadRequestException('user not found');
     }
     //check the role
-    if (user.role !== 'student') {
-      throw new ForbiddenException('only student can update their profile');
-    }
+    // if (user.role !== 'student') {
+    //   throw new ForbiddenException('only student can update their profile');
+    // }
     //update fields
     if (updateUserProfileDto.firstName) {
       user.firstName = updateUserProfileDto.firstName;

@@ -2,7 +2,7 @@ import* as jwt from 'jsonwebtoken';
 import { createHash } from 'crypto';
 import * as fs from 'fs';
 export class commonUtils {
-  //jwt
+  //jwt token generation
   static generateJwtToken(jwtData){
     const generateJwtToken=jwt.sign(jwtData, "jkfjnksdfnsjkfnfsajfnabggfdgfnmmmmnnnsnjj",{expiresIn:'10m'});
     return generateJwtToken;

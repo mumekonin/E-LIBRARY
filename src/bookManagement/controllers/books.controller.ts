@@ -1,10 +1,14 @@
-import { Body, Controller, Post, Get, UseInterceptors, UploadedFile, Param, Put, Delete, Query, NotFoundException, Res } from "@nestjs/common";
+import { Body, Controller, Post, Get, UseInterceptors, UploadedFile, Param, Put, Delete, Query, NotFoundException, Res, UseGuards } from "@nestjs/common";
 import { BooksService } from "../services/books.service";
 import { CreateBookDto, CreateCategoryDto } from "../dtos/books.dto";
 import * as path from 'path';
 import { UploadFileInterceptor } from "uploads/upload.interceptor";
 import type { Response } from 'express';
 import * as fs from 'fs';
+import { JwtAuthGuard } from "src/commons/guards/jwtauth.gourd";
+import { Role } from "src/commons/enums/roles.enum";
+import { Roles } from "src/commons/decorators/roles.decorator";
+import { DbRolesGuard } from "src/commons/guards/roles.guard";
 @Controller('books')
 export class BooksController {
   constructor(
@@ -12,6 +16,9 @@ export class BooksController {
   ) { }
   private readonly uploadDir = path.join(__dirname, '../../../uploads/Uploads');
   //interceptor for file upload
+
+  @UseGuards(JwtAuthGuard, DbRolesGuard)
+  @Roles(Role.LIBRARIAN)
   @UseInterceptors(UploadFileInterceptor())
   @Post('Upload-book')
   async uploadBook(@Body() createBookDto: CreateBookDto, @UploadedFile() file: Express.Multer.File) {
@@ -39,6 +46,10 @@ export class BooksController {
     return result;
   }
   //delete book
+  
+ 
+  @UseGuards(JwtAuthGuard, DbRolesGuard)
+  @Roles(Role.LIBRARIAN)
   @Delete('delete-book/:id')
   async deleteBook(@Param('id') id: string) {
     const result = await this.booksService.deleteBook(id);
