@@ -10,6 +10,6 @@ import { commonUtils } from "src/commons/utils";
       { name: UsersSchema.name, schema: userSchema}
     ])],
   controllers: [UserController],
-  providers: [UserService,commonUtils],
+  providers: [UserService,commonUtils,],
 })
 export class UserModule {}

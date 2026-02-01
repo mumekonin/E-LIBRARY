@@ -64,7 +64,7 @@ export class UserService {
     return { token: generateJwtToken };
   }
   //create librarian account
-  async createLibrarianAccount(usersDto: UsersDto, currentUser: any) {
+  async createLibrarianAccount(usersDto: UsersDto,currentUser: any) {
     //find current user from db
     const user = await this.userModule.findById(currentUser);
     console.log(user?.role)
