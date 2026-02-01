@@ -15,9 +15,9 @@ export class BookCatalog {
   @Prop({ required: true })
   shelfNumber: string;
  @Prop({ required: true })
-  totalCopies?: number;
+  totalCopies: number;
   @Prop({ required: true, min: 0 })
-  availableCopies?: number;
+  availableCopies: number;
 }
 export const bookCatalogSchema = SchemaFactory.createForClass(BookCatalog);
 @Schema({ timestamps: true })
@@ -31,4 +31,9 @@ export class Borrow {
 
   @Prop({ default: false })
   returned: boolean;
-} 
+  @Prop()
+  borrowDate: Date;
+  @Prop()
+  returnDate: Date;  
+}  
+export const borrowSchema = SchemaFactory.createForClass(Borrow);  
