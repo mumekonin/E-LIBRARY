@@ -11,9 +11,9 @@ export class BookCatalogService {
     @InjectModel(BookCatalog.name)
     private readonly bookCatalogModel: Model<BookCatalog>,
     @InjectModel(UsersSchema.name)
-    private readonly userModel: Model<UsersSchema>,
+    private readonly userModel:Model<UsersSchema>,
     @InjectModel(Borrow.name)
-    private readonly borrowModel: Model<Borrow>,
+    private readonly borrowModel:Model<Borrow>,
   ) { }
   async createBookCatalog(bookCatalogDto: BookCatalogDto, currentUser) {
     //check if the user exists
@@ -71,10 +71,9 @@ export class BookCatalogService {
         section: books.section,
         shelfNumber: books.shelfNumber,
         totalCopies: books.totalCopies,
-        availableCopies: books.availableCopies
-        // readUrl: `http://localhost:3000/books/read/${books._id}`, // dynamic read link
-        // downloadUrl: `http://localhost:3000/books/download/${books._id}`, // dynamic download link
-      };
+        availableCopies: books.availableCopies,
+        borrowUrl: `http://localhost:3000/book-catalog/borrow-book/${books._id}`, 
+      }
     });
     return booksResponse;
   }

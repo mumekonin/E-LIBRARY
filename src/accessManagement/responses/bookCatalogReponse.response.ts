@@ -7,6 +7,7 @@ export class BookCatalogResponse {
     shelfNumber: string;
     totalCopies: number;
     availableCopies: number;
+    borrowUrl: string;
 }
 export class BorrowResponse {
      firstName: string;

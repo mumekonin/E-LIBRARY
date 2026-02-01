@@ -18,6 +18,8 @@ export class BookCatalog {
   totalCopies: number;
   @Prop({ required: true, min: 0 })
   availableCopies: number;
+  @Prop()
+  borrowUrl: string;
 }
 export const bookCatalogSchema = SchemaFactory.createForClass(BookCatalog);
 @Schema({ timestamps: true })
@@ -35,5 +37,6 @@ export class Borrow {
   borrowDate: Date;
   @Prop()
   returnDate: Date;  
+
 }  
 export const borrowSchema = SchemaFactory.createForClass(Borrow);  

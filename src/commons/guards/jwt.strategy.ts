@@ -7,7 +7,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {//creates a custom 
         const strategyOptions: StrategyOptions = {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),//tell the passport where to find the token
             ignoreExpiration: false,//reject expired token automaticaliy 
-            secretOrKey: "jkfjnksdfnsjkfnfsajfnabggfdgfnmmmmnnnsnjj",//it used to verify the jwt signture
+            secretOrKey: process.env.JWT_SECRET! //it used to verify the jwt signture
         };
         super(strategyOptions); //send the config  passport stategy constructors 
     }

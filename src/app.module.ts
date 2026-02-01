@@ -1,16 +1,30 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './users/users.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { JwtStrategy } from './commons/guards/jwt.strategy';
 import { BookManagementModule } from './bookManagement/bookManagement.module';
-import { DbRolesGuard } from './commons/guards/roles.guard';
 import { AccessManagementModule } from './accessManagement/accessManagement.module';
+import { JwtStrategy } from './commons/guards/jwt.strategy';
 
 @Module({
-  imports: [UserModule,AccessManagementModule, BookManagementModule, MongooseModule.forRoot("mongodb+srv://mumekonin:347548@cluster0.d3ahpuk.mongodb.net/e-library?retryWrites=true&w=majority")],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URI'),
+      }),
+    }),
+
+    UserModule,
+    AccessManagementModule,
+    BookManagementModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,JwtStrategy],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}
