@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UsersSchema } from 'src/users/schema/users.schema';
 import { UnauthorizedException } from '@nestjs/common/exceptions';
+
 @Injectable()
 
 export class DbRolesGuard implements CanActivate {
@@ -25,11 +26,13 @@ export class DbRolesGuard implements CanActivate {
     );
     if (!requiredRoles) return true; // no roles required
     const request = context.switchToHttp().getRequest();
-    console.log('🔥 REQUEST USER IN ROLES GUARD:', request.user);
+  if (!request.user) {
+      throw new UnauthorizedException('User not authenticated');
+  }
     const userId = request.user?.userId; // should be set by some auth mechanism
     console.log('User ID from request:', userId);
     if (!userId) {
-      throw new UnauthorizedException('User not authenticated');
+      throw new UnauthorizedException('Users not authenticated');
     }
     const user = await this.userModel.findById(userId);
     if (!user) throw new UnauthorizedException('User not found');

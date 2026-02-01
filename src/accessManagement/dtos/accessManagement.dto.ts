@@ -13,6 +13,6 @@ export class BookCatalogDto {
     section: string
     @IsString()
     shelfNumber: string;
-    @IsBoolean()
-    isAvailable: boolean;
+    @IsNumber()
+    totalCopies: number;
 } 
