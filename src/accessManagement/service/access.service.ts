@@ -5,6 +5,7 @@ import { Model } from "mongoose";
 import { BookCatalogDto } from "../dtos/accessManagement.dto";
 import { UsersSchema } from "src/users/schema/users.schema";
 import { BookCatalogResponse, BorrowResponse } from "../responses/bookCatalogReponse.response";
+import { ReportsService } from "src/reporting/service/reports.service";
 @Injectable()
 export class BookCatalogService {
   constructor(
@@ -14,6 +15,7 @@ export class BookCatalogService {
     private readonly userModel:Model<UsersSchema>,
     @InjectModel(Borrow.name)
     private readonly borrowModel:Model<Borrow>,
+    private readonly reportService:ReportsService
   ) { }
   async createBookCatalog(bookCatalogDto: BookCatalogDto, currentUser) {
     //check if the user exists
@@ -83,7 +85,6 @@ export class BookCatalogService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
     if (user.role !== 'student') {
       throw new BadRequestException('Only students can borrow books');
     }
@@ -119,6 +120,13 @@ export class BookCatalogService {
       borrowDate: newBorrow.borrowDate,
       returnDate: newBorrow.returnDate
     }
+    const userId = currentUser.userId;
+    const bookId =bookCatalogId;
+    const action= "book is borrewed";
+    
+    //calling borrow report function
+    await this.reportService.registorBorrowAndReturnRports(userId,bookId,action);
+
     return {
       message: 'Book borrowed successfully',
       borrowDetails: borrowResponse
@@ -146,6 +154,11 @@ export class BookCatalogService {
       book.availableCopies += 1;
       await book.save();
     }
+    const userId = currentUser.userId;
+    const bookId =deletedBorrow.bookCatalogId;
+    const action= "book is returend";
+    //calling borrow report function
+    await this.reportService.registorBorrowAndReturnRports(userId,bookId,action);
     return {
       message: 'Book returned successfully'
     };

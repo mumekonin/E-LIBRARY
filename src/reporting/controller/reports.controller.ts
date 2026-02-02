@@ -13,4 +13,11 @@ export class ReportController{
     const result = await this.reportService.fetchUserReports(currentUserId,id)
     return result;
   }
+  @JwtAuthGuard()
+  @Get('books/:id')
+  async fetchBookLog(@Param('id') id:string){
+    const result = await this.reportService.fetchBookReports(id);
+    return result;
+  }
+  
 }

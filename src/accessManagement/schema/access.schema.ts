@@ -24,13 +24,10 @@ export class BookCatalog {
 export const bookCatalogSchema = SchemaFactory.createForClass(BookCatalog);
 @Schema({ timestamps: true })
 export class Borrow {
-
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId;
-
   @Prop({ type: Types.ObjectId, ref: 'BookCatalog', required: true })
   bookCatalogId: Types.ObjectId;
-
   @Prop({ default: false })
   returned: boolean;
   @Prop()
