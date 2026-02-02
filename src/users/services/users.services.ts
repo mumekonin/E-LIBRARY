@@ -6,11 +6,13 @@ import { ChangePasswordDto, LoginDto, UpdateUserProfileDto, UsersDto } from "../
 import * as bcrypt from 'bcrypt';
 import { UserResponse } from "../responses/users.respnses";
 import { commonUtils } from "src/commons/utils";
+import { ReportsService } from "src/reporting/service/reports.service";
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(UsersSchema.name)
-    private readonly userModule: Model<UsersSchema>
+    private readonly userModule: Model<UsersSchema>,
+    private readonly reportService: ReportsService
   ) { }
   //create user account
   async createUserAccount(usersDto: UsersDto) {
@@ -42,6 +44,10 @@ export class UserService {
       username: savedUser.username,
       role: savedUser.role,
     };
+
+    const userID = savedUser._id.toString();
+    const action = "create user acount";
+    await this.reportService.registorReports(userID, action);
     return UserResponse;
   }
   //user login
@@ -61,13 +67,16 @@ export class UserService {
       username: user.username
     };
     const generateJwtToken = commonUtils.generateJwtToken(jwtData);
+    const userID = user._id.toString();
+    const action = "user loged in";
+
+    await this.reportService.registorReports(userID, action);
     return { token: generateJwtToken };
   }
   //create librarian account
-  async createLibrarianAccount(usersDto: UsersDto,currentUser: any) {
+  async createLibrarianAccount(usersDto: UsersDto, currentUser: any) {
     //find current user from db
     const user = await this.userModule.findById(currentUser);
-    console.log(user?.role)
     if (!user) {
       throw new BadRequestException('current user not found');
     }
@@ -103,6 +112,9 @@ export class UserService {
       username: savedLibrarian.username,
       role: savedLibrarian.role,
     };
+    const userID = "admin" + currentUser;
+    const action = "create librarian acoount";
+    await this.reportService.registorReports(userID, action);
     return UserResponse;
   }
   //get user profile
@@ -118,6 +130,9 @@ export class UserService {
       username: user.username,
       role: user.role
     }
+    const userID = user._id.toString();
+    const action = "viwe your profile";
+    await this.reportService.registorReports(userID, action);
     return userProfile;
   }
   //update user profile
@@ -126,10 +141,6 @@ export class UserService {
     if (!user) {
       throw new BadRequestException('user not found');
     }
-    //check the role
-    // if (user.role !== 'student') {
-    //   throw new ForbiddenException('only student can update their profile');
-    // }
     //update fields
     if (updateUserProfileDto.firstName) {
       user.firstName = updateUserProfileDto.firstName;
@@ -158,11 +169,14 @@ export class UserService {
       username: updatedser.username,
       email: updatedser.email,
     }
+    const userID = updatedser._id.toString();
+    const action = "user updateprofile";
+    await this.reportService.registorReports(userID, action);
     return updatedUserProfile;
   }
-  async chnageUserPassword(id:string, changePasswordDto:ChangePasswordDto){
+  async chnageUserPassword(id: string, changePasswordDto: ChangePasswordDto) {
     const user = await this.userModule.findById(id);
-    if(!user){
+    if (!user) {
       throw new BadRequestException('user not found');
     }
     if (changePasswordDto.password) {
@@ -189,109 +203,121 @@ export class UserService {
       }
       //hash the new password
       const hashedPwd = await bcrypt.hash(newPassword, 10);
-      user.password = hashedPwd;   
+      user.password = hashedPwd;
     }
     const updatedUser = await user.save();
+    const userID = id;
+    const action = "user changed password";
+    await this.reportService.registorReports(userID, action);
     return { message: 'password changed successfully' };
   }
   //update librarian profile only by admin
-  async updateLibrarianProfile(currentUserId: string,librarianId:string, updateUserProfileDto: UpdateUserProfileDto) {
-          const  currentUser=await this.userModule.findById(currentUserId);
-          //find current user from db
-          if(!currentUser){
-            throw new BadRequestException('current user not found');
-          }
-          //check if the current user is admin
-          if(currentUser.role!=='admin'){
-            throw new ForbiddenException('only admin can update librarian profile');
-          }
-          //find librarian by id
-          const librarian = await this.userModule.findById(librarianId);
-          if(!librarian){
-            throw new BadRequestException('librarian not found');
-          }
-          //update fields
-          if (updateUserProfileDto.firstName) {
-            librarian.firstName = updateUserProfileDto.firstName;
-          }
-          if (updateUserProfileDto.lastName) {
-            librarian.lastName = updateUserProfileDto.lastName;
-          }
-          if (updateUserProfileDto.username) {
-            //check if the username is exist
-            const usernameExiists = await this.userModule.findOne({ username: updateUserProfileDto.username.toLowerCase() });
-            if (usernameExiists) {
-              throw new BadRequestException('username already exists');
-            }
-            librarian.username = updateUserProfileDto.username;
-          }
-          if (updateUserProfileDto.email) {
-            librarian.email = updateUserProfileDto.email;
-          }
-          //save the updated librarian to the database
-          const updatedLibrarian = await librarian.save();
-          //map to user response
-          const updatedLibrarianProfile: UserResponse = {
-            id: updatedLibrarian._id.toString(),
-            firstName: updatedLibrarian.firstName,
-            lastName: updatedLibrarian.lastName,
-            username: updatedLibrarian.username,
-            email: updatedLibrarian.email,
-          }
-          return updatedLibrarianProfile;
-  }
-  //delete user account by admin
-  async deleteUserAccount(currentUserId:string, userIdToDelete:string){
+  async updateLibrarianProfile(currentUserId: string, librarianId: string, updateUserProfileDto: UpdateUserProfileDto) {
+    const currentUser = await this.userModule.findById(currentUserId);
     //find current user from db
-    const currrentUser = await this.userModule.findById(currentUserId);
-    if(!currrentUser){
+    if (!currentUser) {
       throw new BadRequestException('current user not found');
     }
     //check if the current user is admin
-    if(currrentUser.role !=='admin'){
+    if (currentUser.role !== 'admin') {
+      throw new ForbiddenException('only admin can update librarian profile');
+    }
+    //find librarian by id
+    const librarian = await this.userModule.findById(librarianId);
+    if (!librarian) {
+      throw new BadRequestException('librarian not found');
+    }
+    //update fields
+    if (updateUserProfileDto.firstName) {
+      librarian.firstName = updateUserProfileDto.firstName;
+    }
+    if (updateUserProfileDto.lastName) {
+      librarian.lastName = updateUserProfileDto.lastName;
+    }
+    if (updateUserProfileDto.username) {
+      //check if the username is exist
+      const usernameExiists = await this.userModule.findOne({ username: updateUserProfileDto.username.toLowerCase() });
+      if (usernameExiists) {
+        throw new BadRequestException('username already exists');
+      }
+      librarian.username = updateUserProfileDto.username;
+    }
+    if (updateUserProfileDto.email) {
+      librarian.email = updateUserProfileDto.email;
+    }
+    //save the updated librarian to the database
+    const updatedLibrarian = await librarian.save();
+    //map to user response
+    const updatedLibrarianProfile: UserResponse = {
+      id: updatedLibrarian._id.toString(),
+      firstName: updatedLibrarian.firstName,
+      lastName: updatedLibrarian.lastName,
+      username: updatedLibrarian.username,
+      email: updatedLibrarian.email,
+    }
+    const userID = updatedLibrarian._id.toString();
+    const action = "profile is updated by admin";
+    await this.reportService.registorReports(userID, action);
+    return updatedLibrarianProfile;
+  }
+  //delete user account by admin
+  async deleteUserAccount(currentUserId: string, userIdToDelete: string) {
+    //find current user from db
+    const currrentUser = await this.userModule.findById(currentUserId);
+    if (!currrentUser) {
+      throw new BadRequestException('current user not found');
+    }
+    //check if the current user is admin
+    if (currrentUser.role !== 'admin') {
       throw new ForbiddenException('only admin can delete user account');
-     }
+    }
     //prevent admin from deleting own account
-    if(currentUserId === userIdToDelete){
+    if (currentUserId === userIdToDelete) {
       throw new ForbiddenException('admin cannot delete own account');
     }
     //find user to delete
     const userToDelete = await this.userModule.findById(userIdToDelete);
-    if(!userToDelete){
+    if (!userToDelete) {
       throw new BadRequestException('user to delete not found');
     }
     //delete user
     const deletedUser = await this.userModule.findByIdAndDelete(userIdToDelete);
-    return { 
+    const userID = userIdToDelete;
+    const action = "account is deleted by admin";
+    await this.reportService.registorReports(userID, action);
+    return {
       message: 'user account deleted successfully'
-     };
+    };
   }
   //fetch all users by role by admin
-  async fetchAllUsersByRole(currentUserID:string,role:string){
-       const currentUser = await this.userModule.findById(currentUserID);
-       if(!currentUser){
-        throw new BadRequestException('current user not found');
-       }
-        //check if the current user is admin
-        if(currentUser.role !=='admin'){
-          throw new ForbiddenException('only admin can fetch users by role');
-         }
-        const users = await this.userModule.find({role:role});
-        if(!users||users.length===0){
-          throw new BadRequestException(`no users found with role: ${role}`);
-        }
-        //map users to user response
-        const usersResponse:UserResponse[]=users.map((user)=>{
-          return {
-            id:user._id.toString(),
-            firstName:user.firstName,
-            lastName:user.lastName,
-            username:user.username,
-            role:user.role,
-            email:user.email
-          }
-        });
-        return usersResponse;
+  async fetchAllUsersByRole(currentUserID: string, role: string) {
+    const currentUser = await this.userModule.findById(currentUserID);
+    if (!currentUser) {
+      throw new BadRequestException('current user not found');
+    }
+    //check if the current user is admin
+    if (currentUser.role !== 'admin') {
+      throw new ForbiddenException('only admin can fetch users by role');
+    }
+    const users = await this.userModule.find({ role: role });
+    if (!users || users.length === 0) {
+      throw new BadRequestException(`no users found with role: ${role}`);
+    }
+    //map users to user response
+    const usersResponse: UserResponse[] = users.map((user) => {
+      return {
+        id: user._id.toString(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        role: user.role,
+        email: user.email
+      }
+    });
+    const userID = currentUserID;
+    const action = "fetched all user";
+    await this.reportService.registorReports(userID, action);
+    return usersResponse;
   }
   //logout user
   async logoutUser(currentUserId: string) {
@@ -299,9 +325,11 @@ export class UserService {
     if (!user) {
       throw new BadRequestException('user not found');
     }
-    user.refreshToken=null;
+    user.refreshToken = null;
     await user.save();
+    const userID = currentUserId;
+    const action = "user logged out";
+    await this.reportService.registorReports(userID, action);
     return { message: 'user logged out successfully' };
-
   }
 }

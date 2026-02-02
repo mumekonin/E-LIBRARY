@@ -7,6 +7,7 @@ import { UserModule } from './users/users.module';
 import { BookManagementModule } from './bookManagement/bookManagement.module';
 import { AccessManagementModule } from './accessManagement/accessManagement.module';
 import { JwtStrategy } from './commons/guards/jwt.strategy';
+import { ReportModule } from './reporting/report.module';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { JwtStrategy } from './commons/guards/jwt.strategy';
         uri: configService.get<string>('MONGO_URI'),
       }),
     }),
-
+    ReportModule,
     UserModule,
     AccessManagementModule,
     BookManagementModule,

@@ -4,7 +4,7 @@ import * as fs from 'fs';
 export class commonUtils {
   //jwt token generation
   static generateJwtToken(jwtData){
-    const generateJwtToken=jwt.sign(jwtData, process.env.JWT_SECRET!,{expiresIn:'1m'});
+    const generateJwtToken=jwt.sign(jwtData, process.env.JWT_SECRET!,{expiresIn:'15m'});
     return generateJwtToken;
   }
   static generateFileHash(file: Express.Multer.File):string{
