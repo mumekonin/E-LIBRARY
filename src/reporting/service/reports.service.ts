@@ -81,10 +81,10 @@ async fetchBookReports(bookId: string) {
 
   // fetch actions
     const reports = await this.reportBookModel
-    .find({ book_id: book._id })
+    .find({ bookId:bookId })
     .sort({ timestamp: -1 })
   return {
-    bookId: book._id,
+    bookId,
     //!check is needed
     logs: reports.map(r => ({
       userId: r.userId,
