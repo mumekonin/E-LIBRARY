@@ -3,9 +3,8 @@ import { createHash } from 'crypto';
 import * as fs from 'fs';
 export class commonUtils {
   //jwt token generation
-  static generateJwtToken(jwtData){
-    const generateJwtToken=jwt.sign(jwtData, process.env.JWT_SECRET!,{expiresIn:'15m'});
-    return generateJwtToken;
+   static generateJwtToken(jwtData: { userId: string; role: string }) {
+    return jwt.sign(jwtData, process.env.JWT_SECRET!, { expiresIn: '15m' });
   }
   static generateFileHash(file: Express.Multer.File):string{
   // diskStorage case

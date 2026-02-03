@@ -4,11 +4,6 @@ import { Model } from "mongoose";
 import { ReportBooKSchema, ReportSchema } from "../schema/reports.shema";
 import { UsersSchema } from "src/users/schema/users.schema";
 import { BookCatalog } from "src/accessManagement/schema/access.schema";
-import { Type } from "class-transformer";
-import { Types } from "mongoose";
-import { report } from "process";
-
-
 @Injectable()
 export class ReportsService{
    constructor(
@@ -85,16 +80,17 @@ async fetchBookReports(bookId: string) {
   }
 
   // fetch actions
-  const reports = await this.reportModel.find({bookId:bookId}).sort({ timestamp: -1 });//sort from new to old
-  if(reports){
-    //!need re check
+    const reports = await this.reportBookModel
+    .find({ book_id: book._id })
+    .sort({ timestamp: -1 })
   return {
-     bookId,
-     logs: reports.map(r => ({
-      userId:r.userId,
+    bookId: book._id,
+    //!check is needed
+    logs: reports.map(r => ({
+      userId: r.userId,
       action: r.action,
-      timestamp: r.timestamp
+      timestamp: r.timestamp,
     })),
   };
+ }
 }
-}}

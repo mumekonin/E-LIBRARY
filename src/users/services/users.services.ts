@@ -12,7 +12,7 @@ export class UserService {
   constructor(
     @InjectModel(UsersSchema.name)
     private readonly userModule: Model<UsersSchema>,
-    private readonly reportService: ReportsService
+    private readonly reportService: ReportsService,
   ) { }
   //create user account
   async createUserAccount(usersDto: UsersDto) {
@@ -63,9 +63,9 @@ export class UserService {
       throw new BadRequestException('invalid password');
     }
     const jwtData = {
-      userId: user._id,
-      username: user.username
-    };
+      userId: user._id.toString(), // always pass a string
+      role: user.role,             // required for RolesGuard
+    }
     const generateJwtToken = commonUtils.generateJwtToken(jwtData);
     const userID = user._id.toString();
     const action = "user loged in";

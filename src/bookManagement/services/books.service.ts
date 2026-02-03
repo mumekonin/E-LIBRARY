@@ -6,7 +6,6 @@ import { BookResponse, CategoryResponse } from "../responses/books.response";
 import { InjectModel } from "@nestjs/mongoose";
 import { commonUtils } from "src/commons/utils";
 import * as fs from 'fs';
-import * as path from 'path';
 @Injectable()
 export class BooksService {
   constructor(
@@ -88,7 +87,6 @@ export class BooksService {
       filetype: bookToBeFind.fileType,
       createdAt: bookToBeFind.createdAt,
       updatedAt: bookToBeFind.updatedAt
-
     }
     return bookDetailResponse;
   }

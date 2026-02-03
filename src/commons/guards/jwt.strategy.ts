@@ -1,19 +1,28 @@
-import { Injectable } from "@nestjs/common";
-import { PassportStrategy } from "@nestjs/passport";
-import { ExtractJwt, Strategy, StrategyOptions } from "passport-jwt";
+// 
+// src/auth/strategies/jwt.strategy.ts
+import { Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
+
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {//creates a custom class that tells NestJS how to validate JWT tokens
-    constructor(){
-        const strategyOptions: StrategyOptions = {
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),//tell the passport where to find the token
-            ignoreExpiration: false,//reject expired token automaticaliy 
-            secretOrKey: process.env.JWT_SECRET! //it used to verify the jwt signture
-        };
-        super(strategyOptions); //send the config  passport stategy constructors 
-    }
-    async validate(payload: any){
-        const { exp, iat, nbf, sub, ...userInfo } = payload;
-        console.log("🚀 ~ JwtStrategy ~ validate ~ rest:", userInfo)
-        return userInfo;
-    }
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor() {
+    const options: StrategyOptions = {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: process.env.JWT_SECRET!,
+    };
+    super(options);
+  }
+
+  async validate(payload: any) {
+    // payload contains whatever you signed in JWT
+    const { userId, role } = payload;
+
+    // return an object (not a string!) so RolesGuard can access it
+    return {
+      userId,
+      role,
+    };
+  }
 }

@@ -5,10 +5,12 @@ import * as path from 'path';
 import { UploadFileInterceptor } from "uploads/upload.interceptor";
 import type { Response } from 'express';
 import * as fs from 'fs';
-import { JwtAuthGuard } from "src/commons/guards/jwtauth.gourd";
+
 import { Role } from "src/commons/enums/roles.enum";
 import { Roles } from "src/commons/decorators/roles.decorator";
 import { DbRolesGuard } from "src/commons/guards/roles.guard";
+import { AuthGuard } from "@nestjs/passport";
+import { JwtAuthGuard } from "src/commons/guards/jwtauth.gourd";
 @Controller('books')
 export class BooksController {
   constructor(
@@ -16,41 +18,42 @@ export class BooksController {
   ) { }
   private readonly uploadDir = path.join(__dirname, '../../../uploads/Uploads');
   //interceptor for file upload
-
-  @UseGuards(JwtAuthGuard, DbRolesGuard)
+  
+  @Post('Upload-book')
+  @UseGuards(AuthGuard('jwt'),DbRolesGuard)
   @Roles(Role.LIBRARIAN)
   @UseInterceptors(UploadFileInterceptor())
-  @Post('Upload-book')
   async uploadBook(@Body() createBookDto: CreateBookDto, @UploadedFile() file: Express.Multer.File) {
-
+       console.log("the file path is",file)
     const result = await this.booksService.createBook(createBookDto, file);
     return result;
   }
-  //get all books
   @Get("get-all-books")
+  @UseGuards(AuthGuard('jwt'),DbRolesGuard)
+  @Roles(Role.LIBRARIAN , Role.ADMIN)
   async getAllBooks() {
     const result = await this.booksService.getAllBooks();
     return result
   }
   //get book detail
+  @JwtAuthGuard()
   @Get("getBookDetail/:id")
   async getBook(@Param('id') id: string) {
     return this.booksService.getBookDetail(id);
   }
   //interceptor for file upload
   @UseInterceptors(UploadFileInterceptor())
-  //update book
   @Put('update-book/:id')
+  @UseGuards(AuthGuard('jwt'),DbRolesGuard)
+  @Roles(Role.LIBRARIAN)
   async updateBook(@Param('id') id: string, @Body() createBookDto: CreateBookDto, @UploadedFile() file: Express.Multer.File) {
     const result = await this.booksService.updateBookFile(id, createBookDto, file);
     return result;
   }
   //delete book
-  
- 
-  @UseGuards(JwtAuthGuard, DbRolesGuard)
-  @Roles(Role.LIBRARIAN)
-  @Delete('delete-book/:id')
+   @Delete('delete-book/:id')
+   @UseGuards(AuthGuard('jwt'),DbRolesGuard)
+   @Roles(Role.ADMIN)
   async deleteBook(@Param('id') id: string) {
     const result = await this.booksService.deleteBook(id);
     return result;
@@ -62,6 +65,7 @@ export class BooksController {
     return books;
   }
   //download book
+  @JwtAuthGuard()
   @Get('download/:id')
   async downloadBook(@Param('id') id: string, @Res() res: Response) {
     //find the book data by id
@@ -102,7 +106,9 @@ export class BooksController {
     });
   }
   @Post('Create-category')
-  async createCategory(@Body()createCategoryDto:CreateCategoryDto){
+  @UseGuards(AuthGuard('jwt'),DbRolesGuard)
+  @Roles(Role.LIBRARIAN)
+  async createCategory(@Body() createCategoryDto:CreateCategoryDto){
     const result = await this.booksService.createCategory(createCategoryDto);
     return result;
   }
