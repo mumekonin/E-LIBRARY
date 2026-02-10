@@ -1,0 +1,140 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.main-container {
+    display: flex;
+    width: 90%;
+    max-width: 1100px;
+    height: 650px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Form Styling */
+.form-side {
+    flex: 1;
+    padding: 60px;
+    background: #fdfdfb; /* Light cream tone from image */
+}
+
+.form-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.subtitle {
+    color: #777;
+    margin-bottom: 40px;
+}
+
+.input-row {
+    display: flex;
+    gap: 15px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 8px;
+    margin-left: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    background: #f4f4f2;
+    border: none;
+    border-radius: 30px; /* Highly rounded as per image */
+    font-size: 1rem;
+    outline: none;
+    color: #444;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: #ffde67; /* Vibrant yellow from image */
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.submit-btn:hover {
+    background: #f7d040;
+    transform: translateY(-2px);
+}
+
+/* Image Side Styling */
+.image-side {
+    flex: 1.2;
+    position: relative;
+    background: #ccc;
+}
+
+.image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay-card {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Media Query for Mobile */
+@media (max-width: 850px) {
+    .image-side { display: none; }
+    .main-container { height: auto; width: 95%; }
+}

@@ -1,0 +1,355 @@
+/* --- Global Reset & Library Theme --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Georgia', 'Times New Roman', serif; /* Academic feel */
+}
+
+body {
+    background-color: #f4f4f9;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    background: #1a2a6c; /* Library Navy */
+    height: 80px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* --- Logo & Video Fix --- */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-video {
+    width: 55px;  /* Fixed size */
+    height: 55px; /* Fixed size */
+    object-fit: cover;
+    border-radius: 4px; /* Slightly rectangular like a book spine */
+    border: 2px solid #f1c40f; /* Library Gold */
+}
+
+.logo-container span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.accent {
+    color: #f1c40f; /* Gold accent for the word "Library" */
+}
+
+/* --- Desktop Links --- */
+.nav-links a {
+    text-decoration: none;
+    color: #fdfdfd;
+    margin: 0 10px;
+    font-weight: 500;
+    font-family: sans-serif;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #f1c40f;
+}
+
+/* --- Search & Buttons --- */
+.search-container input {
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    width: 200px;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.signup-btn {
+    background: #f1c40f;
+    color: #1a2a6c;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-btn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* --- Mobile Menu Toggle (3-Bar) --- */
+.menu-toggle {
+    display: none; /* Hidden on Desktop */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.menu-toggle span {
+    width: 30px;
+    height: 3px;
+    background: #f1c40f; /* Gold bars */
+    border-radius: 2px;
+}
+/* --- Professional Welcome Section --- */
+.welcome-hero {
+    position: relative;
+    height: 70vh; /* Reduced height for a more balanced look */
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000; /* Fallback color */
+}
+
+/* Video adjustments */
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    object-fit: cover;
+}
+
+/* Cinematic Overlay - No "Card" background, just a soft gradient */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    /* Subtle gradient makes white text readable anywhere on the video */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    text-align: center;
+    color: #ffffff; /* Pure white text */
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    /* Text shadow replaces the need for a background box */
+    text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.gold-text {
+    color: #f1c40f; /* Professional Gold Accent */
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 35px;
+    font-weight: 300;
+    line-height: 1.6;
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* Buttons */
+.hero-btns {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: #f1c40f;
+    color: #1a2a6c;
+    border: none;
+    padding: 14px 35px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #d4ac0d;
+    transform: translateY(-2px);
+}
+
+.btn-outline:hover {
+    background: #ffffff;
+    color: #1a2a6c;
+}
+:root {
+    --primary: #3498db;
+    --bg-card: #1a1a2e;
+    --text-main: #ffffff;
+    --text-dim: #a0a0b0;
+}
+
+.library-section {
+    padding: 80px 5%;
+    background-color: #0f0f1a;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* Responsive Grid */
+@media (max-width: 992px) { .book-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .book-grid { grid-template-columns: 1fr; } }
+
+.book-card {
+    background: var(--bg-card);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    padding: 25px;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Bouncy Hover Effect */
+.book-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(52, 152, 219, 0.15);
+}
+
+.category-tag {
+    display: inline-block;
+    background: rgba(52, 152, 219, 0.1);
+    color: var(--primary);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.book-card h3 {
+    font-size: 1.3rem;
+    color: var(--text-main);
+    margin-bottom: 10px;
+}
+
+.book-card p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+    border: none;
+    font-size: 0.85rem;
+}
+
+.read-btn { background: var(--primary); color: white; }
+.down-btn { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+
+.btn:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+}
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .welcome-hero { height: 60vh; }
+    .hero-content h1 { font-size: 2.2rem; }
+    .hero-btns { flex-direction: column; gap: 10px; }
+}
+/* --- Mobile Responsive Rules --- */
+@media screen and (max-width: 950px) {
+    /* Show the 3-bar on the right */
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Hide desktop-only items */
+    .search-container, .auth-buttons {
+        display: none;
+    }
+
+    /* Nav Links transform into full-width dropdown */
+    .nav-links {
+        display: none; /* Hidden by default */
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: #1a2a6c;
+        flex-direction: column;
+        padding: 20px 0;
+        border-top: 1px solid #2a3a7c;
+        text-align: center;
+    }
+
+    /* Show when JavaScript adds the 'active' class */
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 15px;
+        font-size: 1.2rem;
+        margin: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+}

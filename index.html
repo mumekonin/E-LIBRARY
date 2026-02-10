@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E Library | Digital Archive</title>
+    <link rel="stylesheet" href="style/css.css">
+</head>
+<body>
+    <nav>
+        <div class="logo-container">
+            <video autoplay loop muted playsinline class="nav-video">
+                <source src="http://localhost:3000/uploads/system/logo.mp4" type="video/mp4">
+            </video>
+            <span>E <span class="accent">Library</span></span>
+        </div>
+        <div class="nav-links" id="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Browse Books</a>
+            <a href="#">Journals</a>
+            <a href="#">About</a>
+        </div>
+        <div class="search-container">
+            <input type="text" placeholder="Search the catalog...">
+        </div>
+
+        <div class="auth-buttons">
+            <button class="login-btn" onclick="window.location.href='login.html';">Login</button>
+            <button class="signup-btn" onclick="window.location.href='registration.html';">Join Now</button>
+        </div>
+
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <section class="welcome-hero">
+    <video autoplay loop muted playsinline class="hero-video" id="welcome-bg">
+        <source src="" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <h1>Expand Your <span class="gold-text">Horizon</span></h1>
+            <p>Access a premium collection of digital literature and academic resources in our curated e-library.</p>           
+            <div class="hero-btns">
+                <button class="btn-primary">Start Reading</button>
+                <button class="btn-outline">Explore Catalog</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!--browse BOOK-->
+<section id="browse-library" class="library-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="main-title">Academic Resources</h2>
+            <p class="subtitle">Explore our top 6 featured textbooks and research papers.</p>
+        </div>
+
+        <div id="book-grid" class="book-grid">
+            <div class="loading-state">Loading your library...</div>
+        </div>
+    </div>
+</section>
+    <script src="javaScript/app.js"></script>
+</body>
+</html>
