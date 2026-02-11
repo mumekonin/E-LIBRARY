@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E Library | Digital Archive</title>
+  <link rel="stylesheet" href="style/dashboard.css">
+</head>
+<body>
+<nav>
+    <div class="logo-container">
+        <video autoplay loop muted playsinline class="nav-video">
+            <source src="http://localhost:3000/uploads/system/logo.mp4" type="video/mp4">
+        </video>
+        <span>E <span class="accent">Library</span></span>
+    </div>
+
+    <div class="nav-links" id="nav-links">
+        <a href="#home">Home</a>
+        <a href="#browse-library">Browse Books</a>
+        <a href="#about-section">About</a>
+    </div>
+
+    <form class="search-container" id="search-form">
+        <input type="text" placeholder="Search academic book...">
+        <button type="submit" class="search-btn">🔍</button>
+    </form>
+
+<div class="user-profile-group">
+    <div class="user-menu-container" id="user-menu-trigger">
+        <div class="user-avatar" id="user-initials">--</div>
+        <div class="user-details">
+            <span id="user-full-name" class="user-name">Loading...</span>
+            <span id="user-role-badge" class="role-badge">Role</span>
+        </div>
+        <i class="arrow-down">▼</i> <div class="profile-dropdown" id="profile-dropdown">
+            <button onclick="openUpdateModal()" class="dropdown-item">
+                <span class="icon">⚙️</span> Update Profile
+            </button>
+            <div class="dropdown-divider"></div>
+            <button id="logout-btn" class="dropdown-item logout-red">
+                <span class="icon">🚪</span> Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="profile-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Update Profile</h3>
+            <span class="close-modal" onclick="closeUpdateModal()">&times;</span>
+        </div>
+        <form id="update-profile-form">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" id="edit-firstName" required>
+                </div>
+                <div class="input-group">
+                    <label>Last Name</label>
+                    <input type="text" id="edit-lastName" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="edit-username" required>
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="edit-email" required>
+            </div>
+            <button type="submit" class="btn-update-submit">Save Changes</button>
+            <p id="update-status-msg"></p>
+        </form>
+    </div>
+</div>
+    <div class="menu-toggle" id="mobile-menu">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+  <script src="javaScript/dashboard.js"></script>
+</body>
+</html>

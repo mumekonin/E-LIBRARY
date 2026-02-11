@@ -127,13 +127,11 @@ nav {
         font-weight: 700;
         text-transform: capitalize;
     }
-
     .book-card-author {
         color: #64748b;
         font-size: 0.95rem;
         margin-bottom: 20px;
     }
-
     .book-card-btns {
         display: flex;
         gap: 10px;
@@ -280,7 +278,7 @@ nav {
     background: #f1c40f;
     color: #1a2a6c;
     border: none;
-    padding: 14px 35px;
+    padding: 10px 20px;
     font-size: 1rem;
     font-weight: 700;
     border-radius: 4px;
