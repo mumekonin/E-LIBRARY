@@ -196,3 +196,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('mousemove', (e) => {
+    const book = document.querySelector('.lib-main-book');
+    if (!book) return;
+
+    // Calculate mouse position relative to center
+    const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+
+    // Apply rotation based on mouse movement
+    book.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+});
+
+// Reset position when mouse leaves
+document.addEventListener('mouseleave', () => {
+    const book = document.querySelector('.lib-main-book');
+    if (book) {
+        book.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    }
+});
