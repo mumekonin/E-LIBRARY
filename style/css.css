@@ -64,14 +64,104 @@ nav {
 }
 
 /* --- Search & Buttons --- */
-.search-container input {
-    padding: 8px 15px;
-    border-radius: 4px;
-    border: none;
-    outline: none;
-    width: 200px;
+.search-container {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 25px; /* Matches your search bar curve */
+    padding: 2px 5px;
 }
 
+.search-container input {
+    border: none;
+    outline: none;
+    padding: 8px 15px;
+    background: transparent;
+    width: 200px; /* Adjust as needed */
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    transition: transform 0.2s;
+}
+
+.search-btn:hover {
+    transform: scale(1.2);
+}
+/*search result area*/
+.results-display-area {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        padding: 40px 20px;
+        background-color: #0f172a; /* Matches the dark navy in your screenshot */
+        min-height: 100px;
+    }
+
+    /* Unique Card class */
+    .academic-book-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        border-top: 5px solid #ffcc00; /* Yellow accent from your screenshot */
+        transition: transform 0.2s ease;
+    }
+
+    .academic-book-card:hover {
+        transform: translateY(-8px);
+    }
+
+    .book-card-title {
+        color: #1e293b;
+        font-size: 1.3rem;
+        margin: 0 0 5px 0;
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .book-card-author {
+        color: #64748b;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    .book-card-btns {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-read-now {
+        background: #1e293b;
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        flex: 1;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .btn-download-now {
+        background: #ffcc00; /* Matching your "Join Now" yellow */
+        color: #1e293b;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        flex: 1;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
 .auth-buttons {
     display: flex;
     gap: 10px;
@@ -110,6 +200,7 @@ nav {
     background: #f1c40f; /* Gold bars */
     border-radius: 2px;
 }
+
 /* --- Professional Welcome Section --- */
 .welcome-hero {
     position: relative;
@@ -218,6 +309,7 @@ nav {
     background: #ffffff;
     color: #1a2a6c;
 }
+
 :root {
     --primary: #3498db;
     --bg-card: #1a1a2e;
@@ -225,9 +317,12 @@ nav {
     --text-dim: #a0a0b0;
 }
 
+/*!browse section*/
 .library-section {
     padding: 80px 5%;
     background-color: #0f0f1a;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .book-grid {
@@ -236,10 +331,6 @@ nav {
     gap: 30px;
     margin-top: 40px;
 }
-
-/* Responsive Grid */
-@media (max-width: 992px) { .book-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .book-grid { grid-template-columns: 1fr; } }
 
 .book-card {
     background: var(--bg-card);
@@ -290,33 +381,251 @@ nav {
     gap: 12px;
 }
 
+.book-actions {
+    display: flex;
+    justify-content: center; /* center the buttons horizontally */
+    gap: 15px;               /* space between buttons */
+    margin-top: 15px;
+}
+
 .btn {
-    flex: 1;
-    padding: 12px;
+    flex: none;              /* let width be fixed */
+    min-width: 120px;        /* increase button width */
+    padding: 12px 20px;      /* more padding for better size */
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s ease;
     border: none;
-    font-size: 0.85rem;
+    font-size: 0.9rem;       /* slightly bigger font */
+    text-align: center;
 }
 
-.read-btn { background: var(--primary); color: white; }
-.down-btn { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+.read-btn { 
+    background: var(--primary); 
+    color: white; 
+}
+
+.download-btn { 
+    background: transparent; 
+    border: 1.5px solid var(--primary); 
+    color: var(--primary); 
+}
 
 .btn:hover {
     filter: brightness(1.2);
-    transform: translateY(-2px);
+    transform: translateY(-1px); /* reduced motion */
 }
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .welcome-hero { height: 60vh; }
-    .hero-content h1 { font-size: 2.2rem; }
-    .hero-btns { flex-direction: column; gap: 10px; }
+
+.book-cover-wrapper {
+    width: 100%;
+    height: 250px; /* Force a height */
+    position: relative;
+    overflow: hidden;
+    background: #1a1a2e; /* Dark fallback color */
+    border-radius: 10px 10px 0 0;
 }
-/* --- Mobile Responsive Rules --- */
+
+.book-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents the image from looking squished */
+}
+
+/* Enhancing your existing hover effect to zoom the photo */
+.book-card:hover .book-cover {
+    transform: scale(1.1);
+}
+
+/* Move the category tag inside the wrapper for a "Pro" look */
+.book-cover-wrapper .category-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    background: rgba(15, 15, 26, 0.8); /* Darker background for readability */
+    backdrop-filter: blur(4px); /* Glassmorphism */
+    margin-bottom: 0; /* Override your previous margin */
+}
+
+/*about*/
+:root {
+    --primary-blue: #0071ce; /* The classic blue used in your image */
+    --text-dark: #222;
+    --text-gray: #444;
+}
+
+.about-section {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    text-align: center;
+}
+
+.about-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.underline {
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-blue);
+    margin: 0 auto 30px;
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-gray);
+    max-width: 850px;
+    margin: 0 auto 50px;
+}
+
+/* Feature Grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: 400px;
+}
+
+.feature-card {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Specific Card Backgrounds */
+.collection-card {
+    background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800'); /* Library image */
+}
+
+.stats-card {
+    background-color: #004f8a; /* Darker blue like the 'Location Facts' */
+    background-image: linear-gradient(rgba(0, 79, 138, 0.9), rgba(0, 79, 138, 0.9)), 
+                      url('https://www.transparenttextures.com/patterns/world-map.png');
+}
+
+.card-overlay h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* The Orange 'Sendle' Style Button */
+.btn-explore {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+    transition: transform 0.2s;
+}
+
+.btn-explore:hover {
+    transform: scale(1.05);
+}
+
+.btn-explore .icon {
+    color: #ff8b24; /* Orange arrow icon */
+    font-size: 1.5rem;
+}
+
+/*for footer*/
+.footer {
+  background-color: #12141d; /* Dark navy/black background */
+  color: #ffffff;
+  padding: 60px 20px 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr; /* Matches the layout ratio */
+  gap: 40px;
+}
+
+.footer-column h3 {
+  color: #ffcc00; /* Yellow accent color */
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  margin-bottom: 25px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 15px;
+}
+
+.footer-column a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.footer-column a:hover {
+  opacity: 1;
+}
+
+.footer-column p {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid #2d2f3a;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.footer-bottom a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* 992px */
+@media (max-width: 992px) {
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 950px */
 @media screen and (max-width: 950px) {
-    /* Show the 3-bar on the right */
+
     .menu-toggle {
         display: flex;
     }
@@ -351,5 +660,51 @@ nav {
         font-size: 1.2rem;
         margin: 0;
         border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+}
+
+/* 768px */
+@media (max-width: 768px) {
+
+    .welcome-hero { height: 60vh; }
+
+    .hero-content h1 { font-size: 2.2rem; }
+
+    .hero-btns { flex-direction: column; gap: 10px; }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .feature-card {
+        height: 300px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .footer-column h3 {
+        margin-bottom: 15px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer-bottom a {
+        margin: 0 10px;
+    }
+}
+
+/* 600px */
+@media (max-width: 600px) {
+    .book-grid {
+        grid-template-columns: 1fr;
     }
 }

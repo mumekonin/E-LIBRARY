@@ -15,55 +15,122 @@
             <span>E <span class="accent">Library</span></span>
         </div>
         <div class="nav-links" id="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Browse Books</a>
-            <a href="#">Journals</a>
-            <a href="#">About</a>
+            <a href="#home">Home</a>
+            <a href="#browse-library">Browse Books</a>
+            <a href="#about-section">About</a>
+            <a href="#footer">Contact Us</a>
         </div>
-        <div class="search-container">
-            <input type="text" placeholder="Search the catalog...">
-        </div>
-
+        <form class="search-container" id="searchForm">
+            <input type="text" id="bookSearch" placeholder="Search academic book...">
+            <button type="submit" class="search-btn">🔍</button>
+        </form>
         <div class="auth-buttons">
             <button class="login-btn" onclick="window.location.href='login.html';">Login</button>
             <button class="signup-btn" onclick="window.location.href='registration.html';">Join Now</button>
         </div>
-
         <div class="menu-toggle" id="mobile-menu">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </nav>
-    <section class="welcome-hero">
-    <video autoplay loop muted playsinline class="hero-video" id="welcome-bg">
-        <source src="" type="video/mp4">
-    </video>
-
-    <div class="hero-overlay">
-        <div class="hero-content">
-            <h1>Expand Your <span class="gold-text">Horizon</span></h1>
-            <p>Access a premium collection of digital literature and academic resources in our curated e-library.</p>           
-            <div class="hero-btns">
-                <button class="btn-primary">Start Reading</button>
-                <button class="btn-outline">Explore Catalog</button>
+    <div id="results-container"></div>
+    <section class="welcome-hero" id="home">
+        <video autoplay loop muted playsinline class="hero-video" id="welcome-bg">
+            <source src="" type="video/mp4">
+        </video>
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1>Expand Your <span class="gold-text">Horizon</span></h1>
+                <p>Access a premium collection of digital literature and academic resources in our curated e-library.
+                </p>
+                <div class="hero-btns">
+                    <button class="btn-primary">Start Reading</button>
+                    <button class="btn-outline">Explore Catalog</button>
+                </div>
             </div>
         </div>
-    </div>
-</section>
-<!--browse BOOK-->
-<section id="browse-library" class="library-section">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="main-title">Academic Resources</h2>
-            <p class="subtitle">Explore our top 6 featured textbooks and research papers.</p>
+    </section>
+    <!--browse BOOK-->
+    <section id="browse-library" class="library-section">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <h1 class="main-title">Academic Resources</h1>
+            </div>
+            <div id="book-grid" class="book-grid">
+                <div class="loading-state">Loading your library...</div>
+            </div>
         </div>
-
-        <div id="book-grid" class="book-grid">
-            <div class="loading-state">Loading your library...</div>
+    </section>
+    <!--about -->>
+    <section class="about-section" id="about-section">
+        <div class="about-header">
+            <h1>About Our E-Library</h1>
+            <div class="underline"></div>
         </div>
-    </div>
-</section>
+        <div class="about-content">
+            <p>
+                What started as a digital initiative to provide accessible knowledge for all has grown into a premier
+                repository of scholarly resources. Each week, thousands of students and researchers visit our platform
+                to access over 15,000 titles under dozens of categories. With a focus on user-centric design and
+                open-access principles, we remain a leader in digital preservation and intellectual growth. It is all
+                part of our unwavering commitment to fostering a world where information is just a click away.
+            </p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card collection-card">
+                <div class="card-overlay">
+                    <h2>Our Collection</h2>
+                    <button class="btn-explore">
+                        <span class="icon"></span> Browse
+                    </button>
+                </div>
+            </div>
+            <div class="feature-card stats-card">
+                <div class="card-overlay">
+                    <h2>Knowledge Facts</h2>
+                    <div class="map-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer" id="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>LATEST RELEASES</h3>
+                <ul>
+                    <li><a href="#">The Digital Frontier, Fiction</a></li>
+                    <li><a href="#">Quantum Physics Vol. 4, Science</a></li>
+                    <li><a href="#">Modern Architecture, Design</a></li>
+                    <li><a href="#">History of the Silk Road, History</a></li>
+                    <li><a href="#">Python for Beginners, Tech</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>EXPLORE</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">E-Books</a></li>
+                    <li><a href="#">Audiobooks</a></li>
+                    <li><a href="#">Magazines</a></li>
+                    <li><a href="#">Student Portal</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>GET IN TOUCH</h3>
+                <p>0121 555 0199</p>
+                <p><a href="mailto:support@elibrary.com">support@elibrary.com</a></p>
+                <p><a href="#">LinkedIn</a></p>
+                <p class="address">
+                    E-Library Global HQ<br>
+                    123 Digital Way<br>
+                    London, EC1A 1BB
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 E-Library Pro</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
     <script src="javaScript/app.js"></script>
 </body>
 </html>
