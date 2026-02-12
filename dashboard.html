@@ -14,18 +14,15 @@
         </video>
         <span>E <span class="accent">Library</span></span>
     </div>
-
     <div class="nav-links" id="nav-links">
         <a href="#home">Home</a>
         <a href="#browse-library">Browse Books</a>
         <a href="#about-section">About</a>
     </div>
-
     <form class="search-container" id="search-form">
         <input type="text" placeholder="Search academic book...">
         <button type="submit" class="search-btn">🔍</button>
     </form>
-
 <div class="user-profile-group">
     <div class="user-menu-container" id="user-menu-trigger">
         <div class="user-avatar" id="user-initials">--</div>
@@ -44,7 +41,6 @@
         </div>
     </div>
 </div>
-
 <div id="profile-modal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
@@ -110,7 +106,33 @@
             </div>
         </div>
     </section>
-</main>
+  </main>
+  <!--search section-->
+  <section class="search-hero">
+    <div class="search-container">
+        <h1>Find Your Academic Resources</h1>
+        <p>Access thousands of books and research papers instantly.</p>
+        
+        <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="book-search-input" placeholder="Search by title, author, or category...">
+            <button id="search-button">Search</button>
+        </div>
+        
+        <div id="search-status" class="search-status"></div>
+    </div>
+</section>
+<!--browse section-->
+<section class="container">
+    <div id="search-results-grid" class="book-grid">
+        </div>
+</section>
+<section class="featured-section">
+    <div class="container">
+        <h1 class="section-title">Browse book</h1>
+        <div id="book-grid" class="book-grid"></div>
+    </div>
+</section>
   <script src="javaScript/dashboard.js"></script>
 </body>
 </html>

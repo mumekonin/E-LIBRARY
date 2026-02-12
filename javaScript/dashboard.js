@@ -139,32 +139,27 @@ async function openUpdateModal() {
         console.error("Could not load current user data for update", err);
     }
 }
-
 // Close Modal
 function closeUpdateModal() {
     document.getElementById('profile-modal').style.display = 'none';
 }
-
 /**
  * 4. PROFILE UPDATE FORM SUBMISSION
  */
 document.addEventListener('DOMContentLoaded', () => {
     const updateForm = document.getElementById('update-profile-form');
     const statusMsg = document.getElementById('update-status-msg');
-
     if (updateForm) {
         updateForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             statusMsg.textContent = "Processing...";
             statusMsg.style.color = "white";
-
             const updateData = {
                 firstName: document.getElementById('edit-firstName').value,
                 lastName: document.getElementById('edit-lastName').value,
                 username: document.getElementById('edit-username').value,
                 email: document.getElementById('edit-email').value
             };
-
             try {
                 const response = await fetch('http://localhost:3000/users/update-profile', {
                     method: 'PATCH',
@@ -174,9 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: JSON.stringify(updateData)
                 });
-
                 const result = await response.json();
-
                 if (response.ok) {
                     statusMsg.style.color = "#2ecc71"; // Success Green
                     statusMsg.textContent = "Profile updated!";
@@ -196,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 document.addEventListener('mousemove', (e) => {
     const book = document.querySelector('.lib-main-book');
     if (!book) return;
@@ -208,7 +200,6 @@ document.addEventListener('mousemove', (e) => {
     // Apply rotation based on mouse movement
     book.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
 });
-
 // Reset position when mouse leaves
 document.addEventListener('mouseleave', () => {
     const book = document.querySelector('.lib-main-book');
@@ -216,3 +207,47 @@ document.addEventListener('mouseleave', () => {
         book.style.transform = `rotateY(0deg) rotateX(0deg)`;
     }
 });
+
+async function findTopSix() {
+    const grid = document.getElementById('book-grid');
+    const API_BASE = "http://localhost:3000"; // Update this to your backend URL
+
+    try {
+        const response = await fetch(`${API_BASE}/books/getAllBooks`);
+        const books = await response.json();
+
+        grid.innerHTML = books.slice(0, 6).map(book => {
+            // Fix path if it starts with extra slashes or needs the BASE URL
+            const finalImgPath = book.coverPath.startsWith('http') 
+                ? book.coverPath 
+                : `${API_BASE}${book.coverPath.startsWith('/') ? '' : '/'}${book.coverPath}`;
+
+            return `
+                <article class="book-card">
+                    <div class="book-cover-wrapper">
+                        <img src="${finalImgPath}" alt="${book.title}" class="book-cover">
+                    </div>
+                    
+                    <div class="book-details">
+                        <span class="category-tag">${book.category}</span>
+                        <h3 class="book-title">${book.title}</h3>
+                        <p class="book-author">by ${book.author}</p>
+                        <p class="book-description">${book.description}</p>
+                    </div>
+
+                    <div class="book-footer">
+                        <a href="${book.readUrl}" class="btn btn-read">Read Online</a>
+                        <a href="${book.downloadUrl}" class="btn btn-download">Download</a>
+                    </div>
+                </article>
+            `;
+        }).join('');
+
+    } catch (error) {
+        console.error("Error loading library data:", error);
+        grid.innerHTML = `<p style="text-align:center; padding:20px;">Library is currently offline.</p>`;
+    }
+}
+
+findTopSix();
+//!search section script
