@@ -382,71 +382,352 @@ nav {
 }
 /* --- Variables & Reset --- */
 /*!---search section style-----!*/
-/* Search Hero Styling */
-.search-hero {
-    background: linear-gradient(rgba(26, 35, 126, 0.7), rgba(26, 35, 126, 0.7)), 
-                url('your-bridge-background.jpg'); /* Use your bridge image path */
+/* =========================================
+   1. GLOBAL & NAVBAR CORE
+   ========================================= */
+:root {
+    --primary-navy: #1a2a6c;
+    --accent-gold: #f1c40f;
+    --accent-coral: #ff7e67;
+    --text-dark: #333;
+    --text-muted: #777;
+    --bg-light: #f8f9fa;
+    --smooth-ease: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    background: var(--primary-navy);
+    height: 80px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fdfdfd;
+    margin: 0 10px;
+    font-weight: 500;
+    font-family: sans-serif;
+    transition: 0.3s;
+}
+
+.nav-links a:hover { color: var(--accent-gold); }
+
+/* =========================================
+   2. COMPACT SEARCH HERO (REFINED)
+   ========================================= */
+.lib-hero-search {
+    /* Reduced height to keep focus tight */
+    min-height: 300px; 
+    background: linear-gradient(rgba(10, 25, 47, 0.75), rgba(10, 25, 47, 0.75)), 
+                url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=2000');
     background-size: cover;
     background-position: center;
-    padding: 80px 20px;
-    text-align: center;
-    color: white;
-}
-
-.search-container h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.search-box {
-    position: relative;
-    max-width: 700px;
-    margin: 30px auto 0;
     display: flex;
-    background: white;
-    border-radius: 50px; /* Modern rounded style */
-    padding: 5px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
 
-.search-box input {
+.hero-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding-bottom: 0; /* Removed boring gaps */
+}
+
+.hero-subtitle {
+    font-family: sans-serif;
+    font-size: 1rem;
+    color: #cbd5e1;
+    margin-bottom: 25px;
+}
+
+/* Modern Pill Search Group */
+.search-input-group {
+    background: white;
+    padding: 6px;
+    border-radius: 50px; 
+    display: flex;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.search-input-group input {
     flex: 1;
     border: none;
-    padding: 15px 25px;
-    border-radius: 50px;
+    padding: 12px 25px;
     font-size: 1rem;
     outline: none;
+    color: #333;
+    background: transparent;
 }
 
-.search-box button {
-    background: #ff7e67; /* Match your accent coral */
+.search-input-group button {
+    background: var(--accent-coral);
     color: white;
     border: none;
     padding: 0 35px;
     border-radius: 50px;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: var(--smooth-ease);
 }
 
-.search-box button:hover {
-    background: #e56d58;
+.search-input-group button:hover {
+    background: #f46a51;
+    transform: scale(1.03);
 }
 
-.search-status {
-    margin-top: 15px;
+/* =========================================
+   3. SEARCH RESULTS & TOOLBAR
+   ========================================= */
+.results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 6%;
+}
+
+.results-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.results-toolbar h2 {
+    font-size: 1.8rem;
+    color: var(--primary-navy);
+}
+
+.clear-btn {
+    background: #f1f1f1;
+    color: #666;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.clear-btn:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+/* =========================================
+   4. BOOK GRID & COMPACT CARDS
+   ========================================= */
+.book-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+@media (min-width: 768px) {
+    .book-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+    /* Professional 3x2 Layout */
+    .book-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.book-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: var(--smooth-ease);
+}
+
+.book-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* Fixed Image Sizes to prevent stretching */
+.book-cover-wrapper {
+    width: 100%;
+    height: 200px; 
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.book-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-details {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.category-tag {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--accent-coral);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.book-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-navy);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-description {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.book-footer {
+    display: flex;
+    border-top: 1px solid #eee;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-read { color: var(--text-dark); background: #fff; border-right: 1px solid #eee; }
+.btn-download { color: #fff; background: #2d3436; }
+
+/* =========================================
+   5. VISIBILITY & MEDIA QUERIES
+   ========================================= */
+.results-hidden { display: none; }
+/* =========================================
+   TABLET & SMALL SCREEN MEDIA QUERIES
+   ========================================= */
+
+/* Targeted for tablets between 600px and 1024px */
+@media screen and (max-width: 1024px) {
+    /* 1. Adjust Search Hero Height */
+    .lib-hero-search {
+        min-height: 260px; /* More compact for vertical tablet space */
+        padding: 15px;
+    }
+
+    .hero-title {
+        font-size: 1.8rem; /* Scaled down for better fit */
+    }
+
+    /* 2. Fix Search Bar Width */
+    .search-input-group {
+        max-width: 90%; /* Allows more room than the desktop 650px */
+    }
+
+    /* 3. Grid Layout: 2 Columns */
+    /* This prevents the single-card stretching seen in your screenshot */
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 20px 0;
+    }
+
+    /* 4. Fix Image Aspect Ratio on Tablet */
+    .book-cover-wrapper {
+        height: 180px; /* Slightly shorter to maintain "Academic" proportions */
+    }
+}
+
+.no-results-box {
+    grid-column: 1 / -1; /* Spans across all columns of the grid */
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border-radius: 12px;
+    border: 2px dashed #eee;
+}
+
+.no-results-text {
+    font-size: 1.4rem;
+    color: #1a2a6c;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.no-results-subtext {
+    color: #666;
+    font-family: sans-serif;
     font-size: 0.9rem;
-    font-weight: 500;
-    color: #ffdada;
 }
 
-/* Ensure the results grid uses your existing professional 3-column layout */
-#search-results-grid {
-    margin-top: -40px; /* Slight overlap with hero for modern look */
-    min-height: 200px;
+.error-text {
+    grid-column: 1 / -1;
+    color: #e74c3c;
+    text-align: center;
+    font-weight: bold;
 }
+/* Mobile Adjustments (Under 600px) */
+@media screen and (max-width: 600px) {
+    .book-grid {
+        grid-template-columns: 1fr; /* Single column for small phones */
+    }
 
+    .search-input-group {
+        flex-direction: column; /* Stacks button below input */
+        border-radius: 20px;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .search-input-group input {
+        background: white;
+        border-radius: 30px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .search-input-group button {
+        width: 100%;
+        padding: 15px;
+        border-radius: 30px;
+    }
+}
 /*!----browse section style----!*/
 :root {
     --primary-navy: #1a237e;

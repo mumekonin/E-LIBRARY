@@ -251,3 +251,80 @@ async function findTopSix() {
 
 findTopSix();
 //!search section script
+const searchInput = document.getElementById('lib-search-input');
+const resultsWrapper = document.getElementById('results-wrapper');
+const searchGrid = document.getElementById('search-grid');
+const clearLink = document.getElementById('clear-search-link');
+
+// 1. Function to Omit/Hide Results
+function hideResults() {
+    resultsWrapper.classList.remove('results-visible');
+    resultsWrapper.classList.add('results-hidden');
+    searchGrid.innerHTML = "";
+}
+
+// 2. Listen for Input (Handles "Omit on Delete")
+searchInput.addEventListener('input', (e) => {
+    if (e.target.value.trim() === "") {
+        hideResults();
+    }
+});
+
+// 3. Perform Search
+async function performSearch() {
+    const key = searchInput.value.trim();
+    if (!key) return;
+
+    try {
+        const response = await fetch(`http://localhost:3000/books/search-books?key=${key}`);
+        const books = await response.json();
+
+        // Show Results Wrapper regardless of count to show the feedback
+        resultsWrapper.classList.remove('results-hidden');
+        resultsWrapper.classList.add('results-visible');
+
+        if (books.length > 0) {
+            // Success: Map books to the grid
+            searchGrid.innerHTML = books.map(book => `
+                <article class="book-card">
+                    <div class="book-cover-wrapper">
+                         <img src="http://localhost:3000${book.coverPath}" class="book-cover" alt="${book.title}">
+                    </div>
+                    <div class="book-details">
+                        <span class="category-tag">${book.category}</span>
+                        <h3 class="book-title">${book.title}</h3>
+                        <p class="book-description">${book.description}</p>
+                    </div>
+                    <div class="book-footer">
+                        <a href="${book.readUrl}" class="btn btn-read">Read Online</a>
+                        <a href="${book.downloadUrl}" class="btn btn-download">Download</a>
+                    </div>
+                </article>
+            `).join('');
+        } else {
+            // "Book not found" logic
+            searchGrid.innerHTML = `
+                <div class="no-results-box">
+                    <p class="no-results-text">No books found for "${key}"</p>
+                    <span class="no-results-subtext">Try checking your spelling or use different keywords.</span>
+                </div>
+            `;
+        }
+    } catch (err) {
+        console.error("Connection failed");
+        searchGrid.innerHTML = `<p class="error-text">Server error. Please try again later.</p>`;
+    }
+}
+
+// 4. Buttons
+document.getElementById('lib-search-btn').addEventListener('click', performSearch);
+
+// Allow pressing "Enter" to search
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') performSearch();
+});
+
+clearLink.addEventListener('click', () => {
+    searchInput.value = "";
+    hideResults();
+});

@@ -108,19 +108,28 @@
     </section>
   </main>
   <!--search section-->
-  <section class="search-hero">
-    <div class="search-container">
-        <h1>Find Your Academic Resources</h1>
-        <p>Access thousands of books and research papers instantly.</p>
-        
-        <div class="search-box">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" id="book-search-input" placeholder="Search by title, author, or category...">
-            <button id="search-button">Search</button>
+<section class="lib-hero-search">
+    <div class="hero-overlay">
+        <div class="search-wrap">
+            <h1 class="hero-title">Academic Catalog</h1>
+            <p class="hero-subtitle">Search over 5,000+ digital resources and research papers</p>
+            
+            <div class="search-input-group">
+                <i class="fas fa-search input-icon"></i>
+                <input type="text" id="lib-search-input" placeholder="Type title or author..." autocomplete="off">
+                <button id="lib-search-btn">Search</button>
+            </div>
         </div>
-        
-        <div id="search-status" class="search-status"></div>
     </div>
+</section>
+
+<section id="results-wrapper" class="container results-hidden">
+    <div class="results-header">
+        <h2 id="results-count">Search Results</h2>
+        <button class="clear-btn" id="clear-search-link">Clear all</button>
+    </div>
+    <div id="search-grid" class="book-grid">
+        </div>
 </section>
 <!--browse section-->
 <section class="container">
