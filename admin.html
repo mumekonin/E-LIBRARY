@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style/admin.css">
+</head>
+<body>
+
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">LMS<span>Admin</span></div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-link active" data-view="create-view">Register Staff</a>
+            <a href="#" class="nav-link" data-view="update-view">Update Profile</a>
+            <a href="#" class="nav-link danger" data-view="delete-view">Remove User</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="breadcrumb">
+                Admin / <span id="bread-current">Register Staff</span>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <section id="create-view" class="view-section active">
+                <div class="card">
+                    <h2>Register Librarian</h2>
+                    <form id="createForm">
+                        <input type="text" id="c-fname" placeholder="First Name" required>
+                        <input type="text" id="c-lname" placeholder="Last Name" required>
+                        <input type="email" id="c-email" placeholder="Email" required>
+                        <input type="text" id="c-user" placeholder="Username" required>
+                        <input type="password" id="c-pass" placeholder="Password" required>
+                        <button type="submit" class="btn-primary">Create</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="update-view" class="view-section">
+                <div class="card">
+                    <h2>Update User</h2>
+                    <form id="updateForm">
+                        <input type="text" id="u-id" placeholder="User ID" required>
+                        <input type="text" id="u-fname" placeholder="New First Name">
+                        <input type="text" id="u-lname" placeholder="New Last Name">
+                        <input type="email" id="u-email" placeholder="New Email">
+                        <button type="submit" class="btn-primary">Update</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="delete-view" class="view-section">
+                <div class="card danger-card">
+                    <h2>Delete User</h2>
+                    <form id="deleteForm">
+                        <input type="text" id="d-id" placeholder="User ID" required>
+                        <button type="submit" class="btn-danger">Delete</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div id="toast" class="toast"></div>
+
+<script src="javaScript/admin.js"></script>
+</body>
+</html>

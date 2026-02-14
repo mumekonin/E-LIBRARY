@@ -48,42 +48,6 @@ nav {
 }
 
 .nav-links a:hover { color: #f1c40f; }
-
-/* =========================================
-   2. SEARCH BAR (RESTORED ORIGINAL STYLE)
-   ========================================= */
-.search-container {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 25px; /* Pill shape */
-    padding: 2px 5px;
-    width: 250px;
-}
-
-.search-container input {
-    border: none;
-    outline: none;
-    padding: 8px 15px;
-    background: transparent;
-    width: 100%;
-    color: #333;
-}
-
-.search-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    padding: 5px 10px;
-    transition: transform 0.2s; /* Original scaling effect */
-}
-
-.search-btn:hover {
-    transform: scale(1.2);
-}
-
 /* =========================================
    3. USER PROFILE & DROPDOWN
    ========================================= */
@@ -886,7 +850,96 @@ nav {
     text-align: center;
     padding-bottom: 30px;
 }
+/* catagory css */
+/* --- Header Styling --- */
+.subject-portal-header {
+    background: #1a2a6c; /* Matching your Library Navy */
+    padding: 60px 20px;
+    text-align: center;
+    color: white;
+}
 
+.portal-main-title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.portal-tagline {
+    font-family: sans-serif;
+    font-size: 1.1rem;
+    color: #f1c40f; /* Gold accent */
+    font-weight: 600;
+}
+
+/* --- Responsive Grid Layout --- */
+.subject-portal-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 6%;
+}
+
+.subject-portal-grid {
+    display: grid;
+    gap: 30px;
+    /* Desktop: 3 Columns */
+    grid-template-columns: repeat(3, 1fr); 
+}
+
+/* --- Tablet: 2 Columns --- */
+@media screen and (max-width: 1024px) {
+    .subject-portal-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .portal-main-title { font-size: 2rem; }
+}
+
+/* --- Phone: 1 Column --- */
+@media screen and (max-width: 600px) {
+    .subject-portal-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Category Card Styling --- */
+.subject-card {
+    border-radius: 15px;
+    padding: 40px 25px;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.subject-card:hover {
+    transform: translateY(-10px);
+}
+
+.subject-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+.subject-card p {
+    font-family: sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.subject-card .explore-btn {
+    background: rgba(255,255,255,0.25);
+    border: 1px solid white;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
 /* Responsive Fix */
 @media (max-width: 992px) {
     .lib-hero-container {
@@ -902,7 +955,7 @@ nav {
 
 @media (max-width: 1050px) {
     .menu-toggle { display: flex; }
-    .nav-links, .search-container { display: none; } /* Omit search on mobile as requested */
+    .nav-links{ display: none; } /* Omit search on mobile as requested */
     
     .nav-links.nav-active {
         display: flex;

@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+//
 document.addEventListener('mousemove', (e) => {
     const book = document.querySelector('.lib-main-book');
     if (!book) return;
@@ -201,7 +202,7 @@ document.addEventListener('mousemove', (e) => {
     book.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
 });
 // Reset position when mouse leaves
-document.addEventListener('mouseleave', () => {
+document.addEventListener('mouseleave',() => {
     const book = document.querySelector('.lib-main-book');
     if (book) {
         book.style.transform = `rotateY(0deg) rotateX(0deg)`;
@@ -211,30 +212,25 @@ document.addEventListener('mouseleave', () => {
 async function findTopSix() {
     const grid = document.getElementById('book-grid');
     const API_BASE = "http://localhost:3000"; // Update this to your backend URL
-
     try {
         const response = await fetch(`${API_BASE}/books/getAllBooks`);
         const books = await response.json();
-
         grid.innerHTML = books.slice(0, 6).map(book => {
             // Fix path if it starts with extra slashes or needs the BASE URL
             const finalImgPath = book.coverPath.startsWith('http') 
                 ? book.coverPath 
                 : `${API_BASE}${book.coverPath.startsWith('/') ? '' : '/'}${book.coverPath}`;
-
             return `
                 <article class="book-card">
                     <div class="book-cover-wrapper">
                         <img src="${finalImgPath}" alt="${book.title}" class="book-cover">
-                    </div>
-                    
+                    </div>   
                     <div class="book-details">
                         <span class="category-tag">${book.category}</span>
                         <h3 class="book-title">${book.title}</h3>
                         <p class="book-author">by ${book.author}</p>
                         <p class="book-description">${book.description}</p>
                     </div>
-
                     <div class="book-footer">
                         <a href="${book.readUrl}" class="btn btn-read">Read Online</a>
                         <a href="${book.downloadUrl}" class="btn btn-download">Download</a>
@@ -327,4 +323,36 @@ searchInput.addEventListener('keypress', (e) => {
 clearLink.addEventListener('click', () => {
     searchInput.value = "";
     hideResults();
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('subject-display-grid');
+    
+    // Vibrant palette matching the Ethiopian Curriculum UI
+    const subjectColors = ['#ff7e67', '#4caf50', '#29b6f6', '#9575cd', '#ffb300', '#f57c00'];
+
+    async function loadAllCategories() {
+        try {
+            const response = await fetch('http://localhost:3000/books/get-all-categories');
+            const categories = await response.json();
+
+            if (categories && categories.length > 0) {
+                grid.innerHTML = categories.map((cat, index) => `
+                    <div class="subject-card" style="background-color: ${subjectColors[index % subjectColors.length]}">
+                        <div class="card-top">
+                            <h3>${cat.name}</h3>
+                            <p>${cat.description}</p>
+                        </div>
+                        <button class="explore-btn">Tap to Explore ></button>
+                    </div>
+                `).join('');
+            }
+        } catch (error) {
+            console.error("API Error:", error);
+            grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Could not load categories at this time.</p>`;
+        }
+    }
+
+    loadAllCategories();
 });
