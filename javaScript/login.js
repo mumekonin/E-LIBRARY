@@ -1,12 +1,11 @@
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault(); // Stop page refresh
+    e.preventDefault();
 
-    // 1. Get values from the inputs
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     try {
-        // 2. Send data to your API
+        // 1. Send login request to your API
         const response = await fetch('http://localhost:3000/users/login', {
             method: 'POST',
             headers: {
@@ -20,15 +19,41 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
         const data = await response.json();
 
-        // 3. Handle the response
         if (response.ok) {
-            alert('Login Successful!');
-            // Store token if your API sends one
-            localStorage.setItem('token', data.token); 
-            // Redirect to dashboard
-            window.location.href = 'dashboard.html'; 
+            // Store the token (your backend returns { token: "..." })
+            localStorage.setItem('access_token', data.token);
+
+            // 2. Fetch the profile immediately to check the role
+            const profileResponse = await fetch('http://localhost:3000/users/profile', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${data.token}`
+                }
+            });
+
+            const profile = await profileResponse.json();
+
+            if (profileResponse.ok) {
+                // Ensure the role is treated in lowercase to avoid matching errors
+                const role = profile.role.toLowerCase();
+
+                // 3. ROLE-BASED REDIRECTION
+                if (role === 'admin') {
+                    window.location.href = 'admin.html'; // Admin Master Page
+                } else if (role === 'student') {
+                    window.location.href = 'dashboard.html'; // Student Dashboard
+                } else if (role === 'librarian') {
+                    window.location.href = 'librarian.html'; // Librarian Page
+                } else {
+                    alert('Unknown role: ' + profile.role);
+                }
+            } else {
+                alert('Failed to retrieve user profile.');
+            }
+
         } else {
-            alert('Login Failed: ' + data.message);
+            // Handle incorrect password or username
+            alert('Login Failed: ' + (data.message || 'Invalid credentials'));
         }
     } catch (error) {
         console.error('Error:', error);
