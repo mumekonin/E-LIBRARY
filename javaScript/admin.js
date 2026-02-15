@@ -1,74 +1,70 @@
 document.addEventListener("DOMContentLoaded", () => {
     const API_URL = "http://localhost:3000";
 
+    // Selectors
     const navLinks = document.querySelectorAll(".nav-link");
     const sections = document.querySelectorAll(".view-section");
     const bread = document.getElementById("bread-current");
-
     const sidebar = document.getElementById("sidebar");
     const hamburger = document.getElementById("hamburger");
     const overlay = document.getElementById("overlay");
 
     /* =========================
-       VIEW SWITCHING
+       1. VIEW SWITCHING
     ========================= */
     function switchView(id) {
         sections.forEach(sec => sec.classList.remove("active"));
         navLinks.forEach(link => link.classList.remove("active"));
 
-        const section = document.getElementById(id);
-        const link = document.querySelector(`[data-view="${id}"]`);
+        const targetSection = document.getElementById(id);
+        const activeLink = document.querySelector(`[data-view="${id}"]`);
 
-        if (section) section.classList.add("active");
-        if (link) link.classList.add("active");
-        if (bread && link) bread.textContent = link.textContent.trim();
-
-        // Auto close sidebar on mobile
-        sidebar?.classList.remove("open");
-        overlay?.classList.remove("active");
+        if (targetSection) {
+            targetSection.classList.add("active");
+            if (activeLink) {
+                activeLink.classList.add("active");
+                bread.textContent = activeLink.textContent;
+            }
+        }
+        sidebar.classList.remove("open");
+        overlay.classList.remove("active");
     }
 
     navLinks.forEach(link => {
-        link.addEventListener("click", e => {
+        link.addEventListener("click", (e) => {
             e.preventDefault();
             switchView(link.dataset.view);
         });
     });
 
-    /* =========================
-       HAMBURGER MENU
-    ========================= */
-    hamburger?.addEventListener("click", () => {
-        sidebar?.classList.toggle("open");
-        overlay?.classList.toggle("active");
+    hamburger.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("active");
     });
 
-    overlay?.addEventListener("click", () => {
-        sidebar?.classList.remove("open");
-        overlay?.classList.remove("active");
+    overlay.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("active");
     });
 
     /* =========================
-       API CALL ENGINE
+       2. API ENGINE
     ========================= */
     async function apiCall(endpoint, method, body = null) {
-        const token = localStorage.getItem('access_token'); // Get your login token
-        
+        const token = localStorage.getItem('access_token');
         try {
             const res = await fetch(API_URL + endpoint, {
                 method,
-                headers: { 
+                headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` // Added missing header
+                    "Authorization": `Bearer ${token}`
                 },
                 body: body ? JSON.stringify(body) : null
             });
 
             if (res.status === 204) return true;
-
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message || "Error");
-
+            if (!res.ok) throw new Error(data.message || "Request failed");
             return data;
         } catch (err) {
             showToast(err.message, true);
@@ -77,9 +73,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =========================
-       CREATE USER
+       3. FETCH BY ROLE
     ========================= */
-    document.getElementById("createForm")?.addEventListener("submit", async e => {
+    document.getElementById("btn-fetch-role")?.addEventListener("click", async () => {
+        const role = document.getElementById("role-select").value;
+        const container = document.getElementById("role-results");
+        
+        container.innerHTML = "<p>Loading users...</p>";
+
+        const users = await apiCall(`/users/all-users/${role}`, "GET");
+
+        if (users && users.length > 0) {
+            container.innerHTML = "";
+            users.forEach(user => {
+                const div = document.createElement("div");
+                div.style.cssText = "padding:12px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;";
+                div.innerHTML = `
+                    <div><strong>${user.firstName} ${user.lastName}</strong><br><small>${user.email}</small></div>
+                    <code style="font-size:10px; background:#f4f4f4; padding:2px 5px;">${user.id}</code>
+                `;
+                container.appendChild(div);
+            });
+        } else {
+            container.innerHTML = `<p style="color:red;">No users found for ${role}</p>`;
+        }
+    });
+
+    /* =========================
+       4. OTHER ACTIONS
+    ========================= */
+    document.getElementById("createForm")?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
             firstName: document.getElementById("c-fname").value,
@@ -88,61 +111,28 @@ document.addEventListener("DOMContentLoaded", () => {
             username: document.getElementById("c-user").value,
             password: document.getElementById("c-pass").value
         };
-
         if (await apiCall("/users/register-librarian", "POST", payload)) {
-            showToast("Created successfully");
+            showToast("User created successfully!");
             e.target.reset();
         }
     });
 
-    /* =========================
-       UPDATE USER
-    ========================= */
-    document.getElementById("updateForm")?.addEventListener("submit", async e => {
+    document.getElementById("deleteForm")?.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const id = document.getElementById("u-id").value;
-        const payload = {};
-        const fname = document.getElementById("u-fname").value;
-        const lname = document.getElementById("u-lname").value;
-        const email = document.getElementById("u-email").value;
-
-        if (fname) payload.firstName = fname;
-        if (lname) payload.lastName = lname;
-        if (email) payload.email = email;
-
-        if (Object.keys(payload).length === 0) {
-            showToast("Enter at least one field", true);
-            return;
-        }
-
-        if (await apiCall(`/users/update-librarian/${id}`, "PUT", payload)) {
-            showToast("Updated successfully");
-            e.target.reset();
-        }
-    });
-
-    /* =========================
-       DELETE USER
-    ========================= */
-    document.getElementById("deleteForm")?.addEventListener("submit", async e => {
-        e.preventDefault();
-        const id = document.getElementById("d-id").value.trim();
-        if (!id) return showToast("User ID required", true);
-
-        if (!confirm("Are you sure you want to delete this user?")) return;
-
-        if (await apiCall(`/users/delete-user/${id}`, "DELETE")) {
-            showToast("Deleted successfully");
-            e.target.reset();
+        const id = document.getElementById("d-id").value;
+        if (confirm("Delete this user permanently?")) {
+            if (await apiCall(`/users/delete-user/${id}`, "DELETE")) {
+                showToast("User deleted.");
+                e.target.reset();
+            }
         }
     });
 });
 
-function showToast(msg, error = false) {
+function showToast(msg, isError = false) {
     const t = document.getElementById("toast");
-    if (!t) return;
     t.textContent = msg;
-    t.style.background = error ? "#ef4444" : "#10b981";
+    t.style.background = isError ? "var(--danger)" : "var(--success)";
     t.classList.add("show");
     setTimeout(() => t.classList.remove("show"), 3000);
-}``
+}

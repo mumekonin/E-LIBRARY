@@ -1,17 +1,12 @@
-/* =========================================
-   1. VARIABLES & RESET
-   ========================================= */
 :root {
     --primary: #4f46e5;
-    --primary-dark: #4338ca;
     --danger: #ef4444;
     --success: #10b981;
     --bg: #f1f5f9;
-    --card: #ffffff;
-    --border: #e2e8f0;
-    --text-main: #0f172a;
-    --text-muted: #94a3b8;
     --sidebar-bg: #0f172a;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
 }
 
 * {
@@ -27,36 +22,23 @@ body {
     overflow-x: hidden;
 }
 
-/* =========================================
-   2. APP LAYOUT
-   ========================================= */
 .app-shell {
     display: flex;
     min-height: 100vh;
 }
 
+/* Sidebar */
 .sidebar {
-    width: 250px;
+    width: 260px;
     background: var(--sidebar-bg);
     color: white;
     padding: 30px 20px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink: 0;
+    transition: transform 0.3s ease;
 }
 
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-/* =========================================
-   3. SIDEBAR NAVIGATION
-   ========================================= */
 .sidebar-brand {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 800;
     margin-bottom: 40px;
 }
 
@@ -66,13 +48,12 @@ body {
 
 .nav-link {
     display: block;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    border-radius: 8px;
+    padding: 12px 15px;
+    color: #94a3b8;
     text-decoration: none;
-    color: var(--text-muted);
-    transition: all 0.2s;
-    font-weight: 500;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: 0.2s;
 }
 
 .nav-link:hover,
@@ -81,200 +62,160 @@ body {
     color: white;
 }
 
-.nav-link.danger {
-    margin-top: 20px;
-}
-
 .nav-link.danger:hover {
     background: var(--danger);
 }
 
-/* =========================================
-   4. TOP BAR & HAMBURGER
-   ========================================= */
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .top-bar {
     background: white;
-    padding: 18px 25px;
+    padding: 15px 30px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.hamburger {
-    display: none; /* Desktop hidden */
-    flex-direction: column;
-    justify-content: space-between;
-    width: 24px;
-    height: 18px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    padding: 0;
-}
-
-/* The Fixed 3 Lines */
-.hamburger span {
-    display: block;      
-    height: 3px;         
-    width: 100%;         
-    background: var(--text-main); 
-    border-radius: 4px;
-    transition: 0.3s;
-}
-
-.breadcrumb {
-    font-size: 14px;
-    color: var(--text-muted);
-}
-
-#bread-current {
-    color: var(--text-main);
-    font-weight: 700;
-}
-
-/* =========================================
-   5. CONTENT & FORMS
-   ========================================= */
 .content-wrapper {
     padding: 40px;
-    max-width: 1000px;
+    max-width: 900px;
     width: 100%;
     margin: 0 auto;
 }
 
+/* Hamburger (The 3 lines) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--text-main);
+    border-radius: 2px;
+}
+
+/* Forms & Cards */
 .card {
-    background: var(--card);
+    background: white;
     padding: 30px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-.card h2 {
-    margin-bottom: 24px;
-    font-size: 20px;
-    color: var(--text-main);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .danger-card {
     border-top: 4px solid var(--danger);
 }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: 14px;
-    background: #fcfcfc;
-    transition: all 0.2s;
+.filter-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: white;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
 }
 
 button {
-    margin-top: 20px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: none;
     cursor: pointer;
+    border: none;
     font-weight: 600;
-    transition: all 0.2s;
+    transition: 0.2s;
+    border-radius: 8px;
+    padding: 12px 20px;
 }
 
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
 
-.btn-danger { background: var(--danger); color: white; }
-.btn-danger:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
 
-/* =========================================
-   6. VIEW VISIBILITY
-   ========================================= */
+/* View Switching Logic */
 .view-section {
     display: none;
 }
 
 .view-section.active {
     display: block;
-    animation: slideUp 0.4s ease forwards;
+    animation: fadeIn 0.3s ease;
 }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* =========================================
-   7. OVERLAY & TOAST
-   ========================================= */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.5);
-    display: none;
-    z-index: 998;
-    backdrop-filter: blur(2px);
-}
-
-.overlay.active {
-    display: block;
-}
-
+/* Toast */
 .toast {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    padding: 14px 28px;
-    border-radius: 10px;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    background: #333;
     color: white;
-    font-weight: 600;
-    transform: translateY(150px);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 2000;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    transform: translateY(100px);
+    transition: 0.4s;
+    z-index: 1000;
 }
 
 .toast.show {
     transform: translateY(0);
 }
 
-/* =========================================
-   8. MEDIA QUERIES (MOBILE)
-   ========================================= */
+/* Mobile */
 @media (max-width: 768px) {
     .hamburger {
-        display: flex; /* Lines appear here */
+        display: flex;
     }
 
     .sidebar {
         position: fixed;
-        left: -250px;
-        top: 0;
-        bottom: 0;
-        z-index: 1000;
+        left: -260px;
+        height: 100%;
+        z-index: 999;
     }
 
     .sidebar.open {
-        transform: translateX(250px);
+        transform: translateX(260px);
     }
 
-    .content-wrapper {
-        padding: 24px 16px;
-    }
-
-    .card {
-        padding: 20px;
-    }
-
-    button {
-        width: 100%;
+    .overlay.active {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
     }
 }

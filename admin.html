@@ -3,78 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMS Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Agro-Lift Admin Dashboard</title>
     <link rel="stylesheet" href="style/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">Agro-<span>Lift</span></div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link active" data-view="dashboard">Dashboard</a>
+                <a href="#" class="nav-link" data-view="create-view">Create Librarian</a>
+                <a href="#" class="nav-link" data-view="update-view">Update User</a>
+                <a href="#" class="nav-link" data-view="role-view">Get User By Role</a>
+                <a href="#" class="nav-link danger" data-view="delete-view">Delete User</a>
+            </nav>
+        </aside>
 
-<div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand">LMS<span>Admin</span></div>
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-link active" data-view="create-view">Register Staff</a>
-            <a href="#" class="nav-link" data-view="update-view">Update Profile</a>
-            <a href="#" class="nav-link danger" data-view="delete-view">Remove User</a>
-        </nav>
-    </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="breadcrumb">Admin / <span id="bread-current">Dashboard</span></div>
+            </header>
 
-    <main class="main-content">
-        <header class="top-bar">
-            <button class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="breadcrumb">
-                Admin / <span id="bread-current">Register Staff</span>
+            <div class="content-wrapper">
+                
+                <section id="dashboard" class="view-section active">
+                    <div class="card">
+                        <h2>Welcome, Admin</h2>
+                        <p>Select an option from the sidebar to manage the system.</p>
+                    </div>
+                </section>
+                <section id="create-view" class="view-section">
+                    <div class="card">
+                        <h2>Register New Librarian</h2>
+                        <form id="createForm">
+                            <input type="text" id="c-fname" placeholder="First Name" required>
+                            <input type="text" id="c-lname" placeholder="Last Name" required>
+                            <input type="email" id="c-email" placeholder="Email Address" required>
+                            <input type="text" id="c-user" placeholder="Username" required>
+                            <input type="password" id="c-pass" placeholder="Password" required>
+                            <button type="submit" class="btn-primary">Create Account</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="role-view" class="view-section">
+                    <div class="card">
+                        <h2>Find Users by Role</h2>
+                        <div class="filter-group">
+                            <select id="role-select">
+                                <option value="admin">Admin</option>
+                                <option value="librarian">Librarian</option>
+                                <option value="student">Student</option>
+                            </select>
+                            <button id="btn-fetch-role" class="btn-primary">Fetch Users</button>
+                        </div>
+                        <div id="role-results"></div>
+                    </div>
+                </section>
+
+                <section id="update-view" class="view-section">
+                    <div class="card">
+                        <h2>Update Librarian Details</h2>
+                        <form id="updateForm">
+                            <input type="text" id="u-id" placeholder="Target User ID" required>
+                            <input type="text" id="u-fname" placeholder="New First Name">
+                            <input type="text" id="u-lname" placeholder="New Last Name">
+                            <input type="email" id="u-email" placeholder="New Email">
+                            <button type="submit" class="btn-primary">Update Information</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="delete-view" class="view-section">
+                    <div class="card danger-card">
+                        <h2>Delete User</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 15px;">Warning: This action cannot be undone.</p>
+                        <form id="deleteForm">
+                            <input type="text" id="d-id" placeholder="Enter User ID to Delete" required>
+                            <button type="submit" class="btn-danger">Confirm Deletion</button>
+                        </form>
+                    </div>
+                </section>
+
             </div>
-        </header>
+        </main>
+    </div>
 
-        <div class="content-wrapper">
-            <section id="create-view" class="view-section active">
-                <div class="card">
-                    <h2>Register Librarian</h2>
-                    <form id="createForm">
-                        <input type="text" id="c-fname" placeholder="First Name" required>
-                        <input type="text" id="c-lname" placeholder="Last Name" required>
-                        <input type="email" id="c-email" placeholder="Email" required>
-                        <input type="text" id="c-user" placeholder="Username" required>
-                        <input type="password" id="c-pass" placeholder="Password" required>
-                        <button type="submit" class="btn-primary">Create</button>
-                    </form>
-                </div>
-            </section>
+    <div class="overlay" id="overlay"></div>
+    <div id="toast" class="toast"></div>
 
-            <section id="update-view" class="view-section">
-                <div class="card">
-                    <h2>Update User</h2>
-                    <form id="updateForm">
-                        <input type="text" id="u-id" placeholder="User ID" required>
-                        <input type="text" id="u-fname" placeholder="New First Name">
-                        <input type="text" id="u-lname" placeholder="New Last Name">
-                        <input type="email" id="u-email" placeholder="New Email">
-                        <button type="submit" class="btn-primary">Update</button>
-                    </form>
-                </div>
-            </section>
-
-            <section id="delete-view" class="view-section">
-                <div class="card danger-card">
-                    <h2>Delete User</h2>
-                    <form id="deleteForm">
-                        <input type="text" id="d-id" placeholder="User ID" required>
-                        <button type="submit" class="btn-danger">Delete</button>
-                    </form>
-                </div>
-            </section>
-        </div>
-    </main>
-</div>
-
-<div class="overlay" id="overlay"></div>
-<div id="toast" class="toast"></div>
-
-<script src="javaScript/admin.js"></script>
+    <script src="javaScript/admin.js"></script>
 </body>
 </html>
