@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibriDash Pro | Unified Librarian Console</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style/librarian.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-book-q"></i>
+                <span>LibriDash</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <div class="menu-label">Analytics</div>
+                <a href="#" class="menu-item active" data-view="dashboard">
+                    <i class="fas fa-gauge-high"></i> Overview
+                </a>
+                
+                <div class="menu-label">Inventory</div>
+                <a href="#" class="menu-item" data-view="inventory" onclick="getAllBooks()">
+                    <i class="fas fa-boxes-stacked"></i> All Books
+                </a>
+                <a href="#" class="menu-item" data-view="categories" onclick="loadCategories()">
+                    <i class="fas fa-layer-group"></i> Categories
+                </a>
+
+                <div class="menu-label">Actions</div>
+                <a href="#" class="menu-item special" onclick="openModal('uploadModal')">
+                    <i class="fas fa-plus-circle"></i> Upload Asset
+                </a>
+                <a href="#" class="menu-item special" onclick="openModal('catalogModal')">
+                    <i class="fas fa-file-pdf"></i> New Catalog
+                </a>
+
+                <div class="menu-label">Settings</div>
+                <a href="#" class="menu-item" data-view="profile" onclick="getProfile()">
+                    <i class="fas fa-user-circle"></i> My Account
+                </a>
+                <a href="#" class="menu-item logout" onclick="logout()">
+                    <i class="fas fa-arrow-right-from-bracket"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <div class="search-box">
+                        <i class="fas fa-magnifying-glass"></i>
+                        <input type="text" id="globalSearch" placeholder="Search by ID, Title, or ISBN...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-profile-pill">
+                        <div class="user-text">
+                            <span id="nav-user-fullname">Librarian</span>
+                            <small>System Admin</small>
+                        </div>
+                        <div class="avatar" id="nav-avatar">L</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="view-shell">
+                <section id="view-dashboard" class="content-view active">
+                    <div class="welcome-header">
+                        <h1>Good Day, <span id="welcome-name">Admin</span>!</h1>
+                        <p>Total control over the library ecosystem.</p>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon pulse-blue"><i class="fas fa-book"></i></div>
+                            <div class="stat-info">
+                                <h2 id="count-books">0</h2>
+                                <span>Total Assets</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon pulse-purple"><i class="fas fa-folder-open"></i></div>
+                            <div class="stat-info">
+                                <h2 id="count-cats">0</h2>
+                                <span>Categories</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-inventory" class="content-view">
+                    <div class="section-title">
+                        <h2>Books Inventory</h2>
+                        <button class="btn-refresh" onclick="getAllBooks()"><i class="fas fa-sync"></i></button>
+                    </div>
+                    <div class="table-container">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cover</th>
+                                    <th>Book Details</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="view-profile" class="content-view">
+                    <div class="profile-card">
+                        <div class="profile-banner"></div>
+                        <div class="profile-body">
+                            <div class="profile-main-avatar" id="p-avatar-large">?</div>
+                            <h2 id="p-fullname">Loading...</h2>
+                            <p id="p-email">--</p>
+                            <div class="profile-details-grid">
+                                <div class="detail-box"><span>Username</span><p id="p-username">--</p></div>
+                                <div class="detail-box"><span>Access Level</span><p>Librarian</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-cloud-arrow-up"></i> Upload New Book</h3>
+                <span class="close-modal" onclick="closeModal('uploadModal')">&times;</span>
+            </div>
+            <form id="uploadBookForm" class="pro-form">
+                <div class="form-row">
+                    <div class="form-input">
+                        <label>Title</label>
+                        <input type="text" name="title" placeholder="Advanced Quantum Mechanics" required>
+                    </div>
+                    <div class="form-input">
+                        <label>Author</label>
+                        <input type="text" name="author" placeholder="Dr. Jane Doe" required>
+                    </div>
+                </div>
+                <div class="form-input">
+                    <label>Description</label>
+                    <textarea name="description" rows="3"></textarea>
+                </div>
+                <div class="form-input">
+                    <label>Category</label>
+                    <select name="category" id="categorySelect" required></select>
+                </div>
+                <div class="drop-area-grid">
+                    <div class="drop-box">
+                        <label>Book Content (PDF)</label>
+                        <input type="file" name="bookFile" accept=".pdf" required>
+                    </div>
+                    <div class="drop-box">
+                        <label>Cover (Image)</label>
+                        <input type="file" name="coverFile" accept="image/*">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Finalize Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-pen-to-square"></i> Asset Management</h3>
+                <span class="close-modal" onclick="closeModal('editModal')">&times;</span>
+            </div>
+            <form id="updateBookForm" class="pro-form">
+                <input type="hidden" id="editBookId">
+                <div class="form-input">
+                    <label>Title</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="form-input">
+                    <label>Author</label>
+                    <input type="text" id="editAuthor" required>
+                </div>
+                <div class="form-input">
+                    <label>Description</label>
+                    <textarea id="editDescription" rows="3"></textarea>
+                </div>
+                <div class="form-input">
+                    <label>Update File (Optional)</label>
+                    <input type="file" id="editFile" accept=".pdf">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-danger" id="deleteBtn">
+                        <i class="fas fa-trash"></i> Delete Book by ID
+                    </button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="categoryModal">
+        <div class="modal-content small">
+            <div class="modal-header"><h3>New Category</h3><span class="close-modal" onclick="closeModal('categoryModal')">&times;</span></div>
+            <form id="categoryForm" class="pro-form">
+                <input type="text" id="catName" placeholder="Name" required>
+                <textarea id="catDesc" placeholder="Description"></textarea>
+                <button type="submit" class="btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="catalogModal">
+        <div class="modal-content small">
+            <div class="modal-header"><h3>New Catalog</h3><span class="close-modal" onclick="closeModal('catalogModal')">&times;</span></div>
+            <form id="catalogForm" class="pro-form">
+                <input type="text" id="catalogName" placeholder="Catalog Name" required>
+                <textarea id="catalogDesc" placeholder="Catalog Description"></textarea>
+                <button type="submit" class="btn-primary">Generate</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="javaScript/librarian.js"></script>
+</body>
+</html>
