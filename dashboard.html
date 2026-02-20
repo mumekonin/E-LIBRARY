@@ -148,9 +148,116 @@
 <main class="subject-portal-container" id="catagory">
     <div id="subject-display-grid" class="subject-portal-grid">
         </div>
-
 </main>
-<a href="admin.html">ttt</a>
+<!-- catalog section -->
+<section class="lib-portal">
+    <div class="lib-container">
+        <header class="lib-hero-content">
+            <h1>Nexus <span>Digital Library</span></h1>
+            <p class="lib-description">Access the central catalog of physical and digital assets. Secure JWT Session active.</p>
+            
+            <div class="lib-search-pill">
+                <input type="text" id="searchInput" placeholder="Search by title, author, or keyword...">
+                <button id="searchBtn">Initialize Search</button>
+            </div>
+
+            <div class="lib-quick-filters">
+                <span onclick="quickSearch('Technology')">Technology</span>
+                <span onclick="quickSearch('Science')">Science</span>
+                <span onclick="quickSearch('Literature')">Literature</span>
+                <span onclick="quickSearch('Engineering')">Engineering</span>
+            </div>
+        </header>
+
+        <div id="resultsWrapper" class="lib-grid"></div>
+    </div>
+</section>
+<div id="borrowModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Confirm Borrow</h2>
+        <p id="modalBookTitle"></p>
+        <input type="hidden" id="selectedBookId">
+        
+        <label>Expected Return Date:</label>
+        <input type="date" id="returnDate">
+        
+        <div class="modal-footer">
+            <button onclick="closeModal()" class="btn-cancel">Cancel</button>
+            <button id="confirmBorrowBtn" class="btn-confirm">Confirm</button>
+        </div>
+    </div>
+</div>
+<div class="dashboard-viewport">
+    <section id="loan-management-panel" class="loan-registry">
+        
+        <div class="registry-header">
+            <div class="registry-info">
+                <h2 class="registry-title">Active Book Loans</h2>
+                <p class="registry-subtitle">Manage your current subscriptions</p>
+            </div>
+            <div class="registry-actions">
+                <input type="text" id="loanSearch" placeholder="Search by title..." onkeyup="filterLoans()">
+                <span class="registry-count" id="loan-count">0 Items</span>
+            </div>
+        </div>
+
+        <div id="loan-status-alert" class="registry-alert" style="display: none;"></div>
+
+        <div class="registry-table-wrapper">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Book Information</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="loan-list-body">
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="loan-loader" class="registry-loader">
+            <div class="pulse-ring"></div>
+            <span>Syncing Database...</span>
+        </div>
+    </section>
+</div>
+<footer class="nexus-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <span>E <span class="accent">Library</span></span>
+            </div>
+            <p>Empowering the Ethiopian general education curriculum through seamless digital access to academic resources.</p>
+            <div class="social-links">
+                <a href="#">FB</a> <a href="#">X</a> <a href="#">LI</a> <a href="#">IG</a>
+            </div>
+        </div>
+
+        <div class="footer-links-group">
+            <h4>Quick Navigation</h4>
+            <ul>
+                <li><a href="#home">Home Dashboard</a></li>
+                <li><a href="#browse-library">Catalog Search</a></li>
+                <li><a href="#catagory">Subject Portal</a></li>
+                <li><a href="#loan-management-panel">My Active Loans</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Support Hub</h4>
+            <p>📧 support@nexus-library.edu</p>
+            <p>📞 +251 911 000 000</p>
+            <p>📍 Addis Ababa, Ethiopia</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Nexus Digital Library. | <span>Secure JWT Encrypted Session</span></p>
+    </div>
+</footer>
   <script src="javaScript/dashboard.js"></script>
 </body>
 </html>

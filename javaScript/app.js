@@ -1,4 +1,3 @@
-
 window.onload = () => {
     const logo = document.querySelector('.nav-logo');
     // Adding ?v= + timestamp forces the browser to download the NEW version
@@ -202,4 +201,4 @@ document.addEventListener('DOMContentLoaded', loadFeaturedBooks);
                 </div>
             </div>
         `).join('');
-    }
+        } 
