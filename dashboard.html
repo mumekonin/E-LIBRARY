@@ -81,15 +81,13 @@
                 <span class="lib-hero-highlight">an Expert</span>
             </h1>
             <p class="lib-hero-subtitle">
-                Learn how to apply yourself and be good at anything you set your mind on. 
-                Access our premium collection of digital resources today.
+               Discover how to apply yourself and succeed at your goals using our extensive repository of digital knowledge, available to you nowy.
             </p>     
             <div class="lib-hero-btns">
-                <button class="lib-btn-borrow">Borrow Now</button>
-                <button class="lib-btn-details">View Details</button>
+                <button class="lib-btn-borrow" onclick="document.getElementById('borrow').scrollIntoView({behavior: 'smooth'})">Borrow Now</button>
             </div>
             <div class="lib-hero-footer">
-                <p>Download for free in these formats:</p>
+                <p>Download and read these formats:</p>
                 <div class="lib-format-list">
                     <span>PDF</span>
                     <span>EPUB</span>
@@ -109,9 +107,8 @@
 <section class="lib-hero-search">
     <div class="hero-overlay">
         <div class="search-wrap">
-            <h1 class="hero-title">Academic Catalog</h1>
-            <p class="hero-subtitle">Search over 5,000+ digital resources and research papers</p>
-            
+            <h1 class="hero-title">Academic books</h1>
+            <p class="hero-subtitle">Explore our vast collection of scholarly resources</p> 
             <div class="search-input-group">
                 <i class="fas fa-search input-icon"></i>
                 <input type="text" id="lib-search-input" placeholder="Type title or author..." autocomplete="off">
@@ -175,7 +172,7 @@
     </div>
 </section>
 <div id="borrowModal" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-contentt">
         <h2>Confirm Borrow</h2>
         <p id="modalBookTitle"></p>
         <input type="hidden" id="selectedBookId">

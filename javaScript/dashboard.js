@@ -1,18 +1,10 @@
-/**
- * 1. LOGO & INITIALIZATION
- * Forces the browser to reload the logo video to prevent caching issues.
- */
+// LOGO
 window.onload = () => {
     const logo = document.querySelector('.nav-logo');
-    // Adding ?v= + timestamp forces the browser to download the NEW version
     logo.src = "/uploads/system/logo.mp4?v=" + new Date().getTime();
 }
-
-/**
- * 2. MAIN INTERACTION ENGINE
- * Handles Mobile Menu, User Profile Fetching, and Dropdown Toggles.
- */
-document.addEventListener('DOMContentLoaded', async () => {
+ //Handles Mobile Menu, User Profile Fetching, and Dropdown Toggles.
+ document.addEventListener('DOMContentLoaded', async () => {
     
     // --- Selectors ---
     const menuBtn = document.getElementById('mobile-menu');
@@ -27,21 +19,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const roleDisplay = document.getElementById('user-role-badge');
     const avatarDisplay = document.getElementById('user-initials');
 
-    /**
-     * MOBILE MENU LOGIC
-     * Toggles the hamburger animation and vertical link list.
-     */
+    //MOBILE MENU LOGIC Toggles the hamburger animation and vertical link list.
     if (menuBtn && links) {
         menuBtn.addEventListener('click', () => {
             menuBtn.classList.toggle('open');
             links.classList.toggle('nav-active');
         });
     }
-
-    /**
-     * FETCH USER PROFILE
-     * Loads user data from backend and populates the navbar avatar/name.
-     */
+    // FETCH USER PROFILE Loads user data from backend and populates the navbar avatar/name.
     try {
         const response = await fetch('http://localhost:3000/users/profile', {
             method: 'GET',
@@ -53,24 +38,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (response.ok) {
             const data = await response.json();
-            nameDisplay.textContent = `${data.firstName} ${data.lastName}`;
+            nameDisplay.textContent = `${data.firstName}`;
             roleDisplay.textContent = data.role;
-            
-            // Generate initials for avatar circle
             const initials = data.firstName.charAt(0) + data.lastName.charAt(0);
             avatarDisplay.textContent = initials.toUpperCase();
         } else {
-            // Unauthenticated - kick to login
             window.location.href = 'login.html';
         }
     } catch (error) {
         console.error("Profile Fetch Error:", error);
     }
-
-    /**
-     * USER DROPDOWN TOGGLE
-     * Opens/Closes the small menu under the avatar.
-     */
+    // Opens/Closes the small menu under the avatar.
+    
     if (trigger) {
         trigger.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -83,10 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (dropdown) dropdown.classList.remove('show');
     });
 
-    /**
-     * LOGOUT LOGIC
-     * Clears backend session and local storage.
-     */
+    //LOGOUT LOGIC Clears backend session and local storage.
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async (e) => {
             e.preventDefault();
@@ -111,12 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-/**
- * 3. UPDATE PROFILE MODAL FUNCTIONS
- * These are global functions used by the "Update Profile" button in the dropdown.
- */
-
-// Prefill and Open Modal
+//UPDATE PROFILE MODAL FUNCTIONS
 async function openUpdateModal() {
     const modal = document.getElementById('profile-modal');
     const dropdown = document.getElementById('profile-dropdown');
@@ -126,10 +97,9 @@ async function openUpdateModal() {
     
     try {
         const res = await fetch('http://localhost:3000/users/profile', {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
         });
         const user = await res.json();
-        
         // Fill form fields
         document.getElementById('edit-firstName').value = user.firstName;
         document.getElementById('edit-lastName').value = user.lastName;
@@ -143,9 +113,7 @@ async function openUpdateModal() {
 function closeUpdateModal() {
     document.getElementById('profile-modal').style.display = 'none';
 }
-/**
- * 4. PROFILE UPDATE FORM SUBMISSION
- */
+//PROFILE UPDATE FORM SUBMISSION
 document.addEventListener('DOMContentLoaded', () => {
     const updateForm = document.getElementById('update-profile-form');
     const statusMsg = document.getElementById('update-status-msg');
@@ -162,25 +130,22 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             try {
                 const response = await fetch('http://localhost:3000/users/update-profile', {
-                    method: 'PATCH',
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                     },
                     body: JSON.stringify(updateData)
                 });
                 const result = await response.json();
                 if (response.ok) {
-                    statusMsg.style.color = "#2ecc71"; // Success Green
-                    statusMsg.textContent = "Profile updated!";
-                    
+                    statusMsg.style.color = "#2ecc71"; 
+                    statusMsg.textContent = "Profile updated!";   
                     // Update the UI immediately
-                    document.getElementById('user-full-name').textContent = `${result.firstName} ${result.lastName}`;
-                    
-                    // Close modal after short delay
+                    document.getElementById('user-full-name').textContent = `${result.firstName} ${result.lastName}`
                     setTimeout(() => closeUpdateModal(), 1500);
                 } else {
-                    statusMsg.style.color = "#e74c3c"; // Error Red
+                    statusMsg.style.color = "#e74c3c"; 
                     statusMsg.textContent = result.message || "Error updating profile.";
                 }
             } catch (err) {
@@ -189,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-//
 document.addEventListener('mousemove', (e) => {
     const book = document.querySelector('.lib-main-book');
     if (!book) return;
@@ -211,12 +175,11 @@ document.addEventListener('mouseleave',() => {
 
 async function findTopSix() {
     const grid = document.getElementById('book-grid');
-    const API_BASE = "http://localhost:3000"; // Update this to your backend URL
+    const API_BASE = "http://localhost:3000";
     try {
         const response = await fetch(`${API_BASE}/books/getAllBooks`);
         const books = await response.json();
         grid.innerHTML = books.slice(0, 6).map(book => {
-            // Fix path if it starts with extra slashes or needs the BASE URL
             const finalImgPath = book.coverPath.startsWith('http') 
                 ? book.coverPath 
                 : `${API_BASE}${book.coverPath.startsWith('/') ? '' : '/'}${book.coverPath}`;
@@ -259,7 +222,7 @@ function hideResults() {
     searchGrid.innerHTML = "";
 }
 
-// 2. Listen for Input (Handles "Omit on Delete")
+// 2. Listen for Input 
 searchInput.addEventListener('input', (e) => {
     if (e.target.value.trim() === "") {
         hideResults();
@@ -311,8 +274,6 @@ async function performSearch() {
         searchGrid.innerHTML = `<p class="error-text">Server error. Please try again later.</p>`;
     }
 }
-
-// 4. Buttons
 document.getElementById('lib-search-btn').addEventListener('click', performSearch);
 
 // Allow pressing "Enter" to search
@@ -357,19 +318,12 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAllCategories();
 });
 //search and borrow
-/**
- * NEXUS DIGITAL LIBRARY - FINAL INTEGRATED SCRIPT
- * Fixes: CastError (undefined ID) & Synchronization with Login
- */
-
 const searchField = document.getElementById('searchInput');
 const resultsDisplay = document.getElementById('resultsWrapper');
 const borrowModal = document.getElementById('borrowModal');
 const confirmBtn = document.getElementById('confirmBorrowBtn');
 
 // --- 1. SEARCH SYSTEM ---
-
-// Instant Omit: Clear results immediately when input is empty
 searchField.addEventListener('input', (e) => {
     if (e.target.value.trim() === "") {
         resultsDisplay.innerHTML = ""; 
@@ -427,7 +381,7 @@ function renderLibraryCards(books) {
     
     books.forEach(book => {
         const card = document.createElement('div');
-        card.className = 'book-card';
+        card.className = 'boook-card';
         
         // Escape titles to handle names like "O'Reilly Guide"
         const safeTitle = book.title.replace(/'/g, "\\'");
@@ -455,8 +409,6 @@ function renderLibraryCards(books) {
 // --- 2. BORROW TRANSACTION SYSTEM ---
 
 function openBorrowModal(bookId, bookTitle) {
-    // This is where 'undefined' was getting passed. 
-    // If bookId is undefined here, the modal will fail.
     if (!bookId || bookId === 'undefined') {
         alert("Error: Book ID is missing. Please refresh search.");
         return;
@@ -517,15 +469,9 @@ confirmBtn.addEventListener('click', async () => {
         confirmBtn.disabled = false;
     }
 });
-
-///////////////////////
 // Global Configuration
 const API_BASE_URL = 'http://localhost:3000/book-catalog';
-
-/**
- * 1. GET AUTH TOKEN
- * Uses 'access_token' to match your Login Script
- */
+//GET AUTH TOKEN
 function getValidToken() {
     const token = localStorage.getItem('access_token');
     if (!token) {
@@ -535,9 +481,7 @@ function getValidToken() {
     return token;
 }
 
-/**
- * 2. FETCH ACTIVE LOANS
- */
+//FETCH ACTIVE LOANS
 async function loadRegistry() {
     const token = getValidToken();
     if (!token) return;
@@ -573,9 +517,7 @@ async function loadRegistry() {
     }
 }
 
-/**
- * 3. RENDER TABLE ROWS
- */
+// RENDER TABLE ROWS
 function renderRegistryTable(loans) {
     const tbody = document.getElementById('loan-list-body');
     const countBadge = document.getElementById('loan-count');
@@ -611,10 +553,7 @@ function renderRegistryTable(loans) {
         </tr>
     `).join('');
 }
-
-/**
- * 4. PROCESS RETURN ACTION
- */
+// PROCESS RETURN ACTION
 async function processReturn(borrowId) {
     const token = getValidToken();
     if (!token) return;
@@ -623,8 +562,6 @@ async function processReturn(borrowId) {
 
     const row = document.getElementById(`row-${borrowId}`);
     const btn = row.querySelector('.btn-return');
-    
-    // UI Loading State
     btn.disabled = true;
     btn.innerText = "Syncing...";
     row.style.opacity = "0.6";
@@ -637,7 +574,6 @@ async function processReturn(borrowId) {
 
         if (response.ok) {
             showAlert("Success: Item returned to library.", "green");
-            // Animated removal
             row.style.transition = "all 0.4s ease";
             row.style.transform = "translateX(20px)";
             row.style.opacity = "0";
@@ -658,9 +594,7 @@ async function processReturn(borrowId) {
     }
 }
 
-/**
- * 5. SEARCH / FILTERING LOGIC
- */
+//SEARCH / FILTERING LOGIC
 function filterLoans() {
     const query = document.getElementById('loanSearch').value.toLowerCase();
     const rows = document.querySelectorAll('.registry-row');
@@ -670,10 +604,7 @@ function filterLoans() {
         row.style.display = text.includes(query) ? "" : "none";
     });
 }
-
-/**
- * 6. UTILITIES
- */
+// UTILITIES
 function showAlert(message, type) {
     const alertBox = document.getElementById('loan-status-alert');
     if (!alertBox) return;
@@ -698,8 +629,6 @@ function updateCount() {
     if (countBadge) countBadge.innerText = `${remaining} Active`;
     if (remaining === 0) renderRegistryTable([]);
 }
-
-// Initialization
 document.addEventListener('DOMContentLoaded', loadRegistry);
 
 
