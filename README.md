@@ -1,3 +1,38 @@
+📚 E-LIBRARY
+
+A digital library system for managing books, users, and borrowing efficiently, combining the convenience of a physical library and digital reading. Users can borrow physical books, return them, download e-books, and read online.
+
+🌟 Features
+📖 Book Management
+
+  Add, remove, and update books
+
+  Track book availability (physical and digital copies)
+
+👤 User Management
+
+  User registration and authentication
+
+  Role-based access control (e.g., admin, member)
+
+🔄 Borrowing & Returning
+
+  Borrow and return physical books
+
+  Automatic tracking of due dates and book status
+
+💻 Digital Library Access
+
+  Download e-books for offline reading
+
+  Read books online without downloading
+
+🔍 Additional Features
+
+   Search and filter books by title, author, or category
+
+   Maintain borrowing history for users
+  
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
