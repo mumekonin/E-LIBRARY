@@ -32,10 +32,10 @@ nav {
 }
 
 .nav-video {
-    width: 55px;  /* Fixed size */
-    height: 55px; /* Fixed size */
+    width: 55px;  
+    height: 55px; 
     object-fit: cover;
-    border-radius: 4px; /* Slightly rectangular like a book spine */
+    border-radius: 110px; /* Slightly rectangular like a book spine */
     border: 2px solid #f1c40f; /* Library Gold */
 }
 
