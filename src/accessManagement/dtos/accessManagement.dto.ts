@@ -6,7 +6,7 @@ export class BookCatalogDto {
     @IsString()
     author: string;
     @IsString()
-    category: string
+    category: string;
     @IsNumber()
     floorNumber: number;
     @IsString()

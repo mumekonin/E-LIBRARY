@@ -30,15 +30,21 @@ export class BooksSchema {
   downloadUrl?: string;
   @Prop()
   readUrl?: string;
+  @Prop()
+  coverPath?: string;
+  @Prop()
+  coverType?: string;
+  @Prop()
+  coverSize?: number;
 }
 export const bookSchema = SchemaFactory.createForClass(BooksSchema);
-export class CatagorySchema {
-  @Prop()
-  name:string;
-  @Prop()
+
+@Schema({ timestamps: true }) // This automatically handles createdAt and updatedAt
+export class CategorySchema{
+  @Prop({ required: true, unique: true, trim: true })
+  name: string;
+
+  @Prop({ required: true })
   description: string;
-  @Prop()
-  createdAt?: Date;
-  @Prop()
-  updatedAt?: Date;
-} export const catagorySchema = SchemaFactory.createForClass(CatagorySchema);
+}
+export const categorySchema = SchemaFactory.createForClass(CategorySchema);

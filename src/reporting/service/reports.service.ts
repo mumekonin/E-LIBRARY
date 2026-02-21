@@ -30,7 +30,6 @@ async fetchUserReports(currentUserId: any, userId: string) {
   if (!user) {
     throw new BadRequestException('User not found');
   }
-
   const currentUser = await this.userModel.findById(currentUserId);
   if (!currentUser) {
     throw new BadRequestException("Current user not found");

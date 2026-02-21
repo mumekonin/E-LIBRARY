@@ -12,10 +12,10 @@ export class BookCatalogService {
     @InjectModel(BookCatalog.name)
     private readonly bookCatalogModel: Model<BookCatalog>,
     @InjectModel(UsersSchema.name)
-    private readonly userModel:Model<UsersSchema>,
+    private readonly userModel: Model<UsersSchema>,
     @InjectModel(Borrow.name)
-    private readonly borrowModel:Model<Borrow>,
-    private readonly reportService:ReportsService
+    private readonly borrowModel: Model<Borrow>,
+    private readonly reportService: ReportsService
   ) { }
   async createBookCatalog(bookCatalogDto: BookCatalogDto, currentUser) {
     //check if the user exists
@@ -74,7 +74,7 @@ export class BookCatalogService {
         shelfNumber: books.shelfNumber,
         totalCopies: books.totalCopies,
         availableCopies: books.availableCopies,
-        borrowUrl: `http://localhost:3000/book-catalog/borrow-book/${books._id}`, 
+        borrowUrl: `http://localhost:3000/book-catalog/borrow-book/${books._id}`,
       }
     });
     return booksResponse;
@@ -96,12 +96,12 @@ export class BookCatalogService {
     if (book.availableCopies < 1) {
       throw new BadRequestException('No available copies to borrow');
     }
-  if (!returnDate) {
-    throw new BadRequestException('Return date is required');
-  }
-  if (isNaN(returnDate.getTime())) {
-    throw new BadRequestException('Invalid return date format');
-  }
+    if (!returnDate) {
+      throw new BadRequestException('Return date is required');
+    }
+    if (isNaN(returnDate.getTime())) {
+      throw new BadRequestException('Invalid return date format');
+    }
     //create a borrow record
     const newBorrow = new this.borrowModel({
       userId: currentUser.userId,
@@ -121,11 +121,11 @@ export class BookCatalogService {
       returnDate: newBorrow.returnDate
     }
     const userId = currentUser.userId;
-    const bookId =bookCatalogId;
-    const action= "book is borrewed";
-    
+    const bookId = bookCatalogId;
+    const action = "book is borrewed";
+
     //calling borrow report function
-    await this.reportService.registorBorrowAndReturnRports(userId,bookId,action);
+    await this.reportService.registorBorrowAndReturnRports(userId, bookId, action);
 
     return {
       message: 'Book borrowed successfully',
@@ -138,7 +138,6 @@ export class BookCatalogService {
     if (!borrowRecord) {
       throw new NotFoundException('Borrow record not found');
     }
-
     //check if the borrow record belongs to the current user
     if (borrowRecord.userId.toString() !== currentUser.userId) {
       throw new BadRequestException('You can only return your own borrowed books');
@@ -155,12 +154,17 @@ export class BookCatalogService {
       await book.save();
     }
     const userId = currentUser.userId;
-    const bookId =deletedBorrow.bookCatalogId;
-    const action= "book is returend";
+    const bookId = deletedBorrow.bookCatalogId;
+    const action = "book is returend";
     //calling borrow report function
-    await this.reportService.registorBorrowAndReturnRports(userId,bookId,action);
+    await this.reportService.registorBorrowAndReturnRports(userId, bookId, action);
     return {
       message: 'Book returned successfully'
     };
+  }
+  async findActiveBorrowsByUser(userId: string) {
+    return this.borrowModel.find({ userId })
+      .populate('bookCatalogId') // This pulls in the Book details
+      .exec();
   }
 }

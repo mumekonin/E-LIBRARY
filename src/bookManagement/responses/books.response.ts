@@ -10,6 +10,8 @@ export class BookResponse {
   sendFile?: string;
   readUrl?: string;
   downloadUrl?: string;
+  coverPath?: string;
+  coverType?: string;
 }
 export class CategoryResponse {
   id: string

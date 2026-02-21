@@ -19,3 +19,15 @@ export class CreateCategoryDto{
   @IsString()
   description?:string;
 }
+
+export class updateBookDto {
+  @IsString()
+  @Type(() => String)
+  title?: string;
+  @IsString()
+  author?: string;
+  @IsString()
+  description?: string;
+  @IsString()
+  category?: string;
+}

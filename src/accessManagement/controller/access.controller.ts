@@ -44,4 +44,10 @@ export class BookCatalogController {
     const result = await this.bookCatalogService.returnBook(currentUser, borrowId);
     return result;
   }
+  @Get('my-active-loans')
+  @JwtAuthGuard()
+  async getMyLoans(@Req() req: any) {
+    const userId = req.user.userId;
+    return this.bookCatalogService.findActiveBorrowsByUser(userId);
+  }
 }

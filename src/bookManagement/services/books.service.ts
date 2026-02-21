@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Model } from "mongoose";
-import { BooksSchema, CatagorySchema } from "../schemas/books.schema";
-import { CreateBookDto, CreateCategoryDto } from "../dtos/books.dto";
+import { BooksSchema, CategorySchema } from "../schemas/books.schema";
+import { CreateBookDto, CreateCategoryDto, updateBookDto } from "../dtos/books.dto";
 import { BookResponse, CategoryResponse } from "../responses/books.response";
 import { InjectModel } from "@nestjs/mongoose";
 import { commonUtils } from "src/commons/utils";
@@ -11,45 +11,47 @@ export class BooksService {
   constructor(
     @InjectModel(BooksSchema.name)
     private readonly booksModel: Model<BooksSchema>,
-    @InjectModel(CatagorySchema.name)
-    private readonly categoryModel:Model<CatagorySchema>
+    @InjectModel(CategorySchema.name)
+    private readonly categoryModel:Model<CategorySchema>
     //private readonly commonUtiles:commonUtils
   ) { }
-  async createBook(createBookDto: CreateBookDto, file: Express.Multer.File) {
+// books.service.ts
+async createBook(createBookDto: CreateBookDto, bookFile: Express.Multer.File, coverFile?: Express.Multer.File) {
+  
+  // Normalize paths: replace backslashes with forward slashes
+  const normalizedFilePath = bookFile?.path ? bookFile.path.replace(/\\/g, '/') : null;
+  
+  // Adding the leading slash ensures the browser treats it as a root-relative path
+  const normalizedCoverPath = coverFile?.path ? `/${coverFile.path.replace(/\\/g, '/')}` : null;
 
-    const fileHash = commonUtils.generateFileHash(file);
-    const existingBook = await this.booksModel.findOne({ fileHash });
-    if (existingBook) {
-      throw new BadRequestException("file is duplicated");
-    };
-    //check if category exists
-    const category = await this.categoryModel.findOne({name:createBookDto.category});
-    if (!category) {
-      throw new BadRequestException("category is not found");
-    }
-    const newBook = new this.booksModel({ 
-      ...createBookDto, // include all DTO fields
-     
-      category: createBookDto.category,
-      filePath: file.path,
-      fileType: file.mimetype,
-      fileSize: file.size,
-      fileHash: fileHash
-    });
+  const newBook = new this.booksModel({ 
+    ...createBookDto,
+    category: createBookDto.category,
+    filePath: normalizedFilePath,
+    fileType: bookFile.mimetype,
+    fileSize: bookFile.size,
+    fileHash: commonUtils.generateFileHash(bookFile),
 
-    const saveBooks = await newBook.save();
-    const bookResponse: BookResponse = {
-      id: saveBooks._id.toString(),
-      title: saveBooks.title,
-      author: saveBooks.author,
-      description: saveBooks.description,
-      category: saveBooks.category,
-      filetype: saveBooks.fileType,
-      createdAt: saveBooks.createdAt,
-      updatedAt: saveBooks.updatedAt
-    }
-    return bookResponse;
-  }
+    coverPath: normalizedCoverPath, 
+    coverType: coverFile?.mimetype || null,
+    coverSize: coverFile?.size || 0,
+  });
+
+  const saveBooks = await newBook.save();
+  
+  return {
+    id: saveBooks._id.toString(),
+    title: saveBooks.title,
+    author: saveBooks.author,
+    description: saveBooks.description,
+    category: saveBooks.category,
+    filetype: saveBooks.fileType,
+    createdAt: saveBooks.createdAt,
+    updatedAt: saveBooks.updatedAt,
+    coverPath: saveBooks.coverPath,
+    coverType: saveBooks.coverType,
+  };
+}
   //retrive all books
   async getAllBooks() {
     const books = await this.booksModel.find();
@@ -91,7 +93,7 @@ export class BooksService {
     return bookDetailResponse;
   }
   //updateBook
-  async updateBookFile(bookId: string, createBookDto: CreateBookDto, file: Express.Multer.File) {
+  async updateBookFile(bookId: string, updateBookDto: updateBookDto, file: Express.Multer.File) {
     //check if the book found in db
     const book = await this.booksModel.findById(bookId);
     if (!book) {
@@ -104,19 +106,19 @@ export class BooksService {
       }
       //hash the new file
       const fileHash = commonUtils.generateFileHash(file);
-      if (createBookDto.title) {
-        book.title = createBookDto.title
+      if (updateBookDto.title) {
+        book.title = updateBookDto.title
       }
-      if (createBookDto.author) {
-        book.author = createBookDto.author;
+      if (updateBookDto.author) {
+        book.author = updateBookDto.author;
       }
-      if (createBookDto.description) {
-        book.description = createBookDto.description;
+      if (updateBookDto.description) {
+        book.description = updateBookDto.description;
       }
 
-      book.filePath = file.path;
-      book.fileSize = file.size;
-      book.fileType = file.mimetype;
+      book.filePath = file?.path;
+      book.fileSize = file?.size;
+      book.fileType = file?.mimetype;
       book.fileHash = fileHash;
 
       const updatedBook = await book.save();
@@ -183,6 +185,7 @@ export class BooksService {
         filePath: books.filePath,
         fileSize: books.fileSize,
         filetype: books.fileType,
+        coverPath:books.coverPath,
         updatedAt: books.updatedAt,
         readUrl: `http://localhost:3000/books/read/${books._id}`, // dynamic read link
         downloadUrl: `http://localhost:3000/books/download/${books._id}`, // dynamic download link
@@ -196,26 +199,27 @@ export class BooksService {
     if (!book) throw new NotFoundException('Book not found');
     return book;
   }
-  async createCategory(categoryDto:CreateCategoryDto){
-   //check if category exists
-   const existingCategory = await this.categoryModel.findOne({name:categoryDto.name})
-   if(existingCategory){
-    throw new BadRequestException("category already exists");
-   }
-
-   const newCategory = new this.categoryModel({
-     name:categoryDto.name,
-     description:categoryDto.description
-   });
-   const savedCategory = await newCategory.save();
-   return{
-    id:savedCategory._id.toString(),
-    name:savedCategory.name,
-    description:savedCategory.description,
-    createdAt:savedCategory.createdAt,
-    updatedAt:savedCategory.updatedAt 
-   }
+async createCategory(categoryDto: CreateCategoryDto) {
+  // 1. Correct the logic: Throw error IF existingCategory is FOUND
+  const existingCategory = await this.categoryModel.findOne({ name: categoryDto.name });
+  
+  if (existingCategory) {
+    throw new BadRequestException("Category already exists");
   }
+
+  // 2. Use .create() for a cleaner approach
+  const savedCategory = await this.categoryModel.create({
+    name: categoryDto.name,
+    description: categoryDto.description
+  });
+
+  // 3. Return the mapped object
+  return {
+    id: savedCategory._id.toString(),
+    name: savedCategory.name,
+    description: savedCategory.description
+  };
+}
 
   async getAllCategories(){
     const categories = await this.categoryModel.find();
@@ -227,10 +231,29 @@ export class BooksService {
       return {
         id:category._id.toString(),
         name:category.name,
-        description:category.description,
-        updatedAt:category.updatedAt
+        description:category.description
       }
     });
     return categoriesResponse;
+  }
+ async findTopSix() {
+  const books = await this.booksModel.find().select('+coverPath').limit(6).exec();
+     console.log()
+  return books.map((book) => ({
+     message:"urlis", url:book.coverPath,
+    id: book._id.toString(),
+    title: book.title,
+    author: book.author,
+    description: book.description,
+    category: book.category,
+    coverPath:book.coverPath, 
+    readUrl: `http://localhost:3000/books/read/${book._id}`,
+    downloadUrl: `http://localhost:3000/books/download/${book._id}`,
+  }));
+}
+  async findOne(id: string): Promise<BooksSchema> {
+    const book = await this.booksModel.findById(id).exec();
+    if (!book) throw new NotFoundException('Book not found');
+    return book;
   }
 }
