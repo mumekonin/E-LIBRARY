@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E Library | Digital Archive</title>
+    <link rel="stylesheet" href="style/css.css">
+</head>
+<body>
+    <nav>
+        <div class="logo-container">
+            <video autoplay loop muted playsinline class="nav-video">
+                <source src="http://localhost:3000/uploads/system/logo.mp4" type="video/mp4">
+            </video>
+            <span>E <span class="accent">Library</span></span>
+        </div>
+        <div class="nav-links" id="nav-links">
+            <a href="#home">Home</a>
+            <a href="#browse-library">Browse Books</a>
+            <a href="#about-section">About</a>
+            <a href="#footer">Contact Us</a>
+        </div>
+        <form class="search-container" id="searchForm">
+            <input type="text" id="bookSearch" placeholder="Search academic book...">
+            <button type="submit" class="search-btn">🔍</button>
+        </form>
+        <div class="auth-buttons">
+            <button class="login-btn" onclick="window.location.href='login.html';">Login</button>
+            <button class="signup-btn" onclick="window.location.href='registration.html';">Join Now</button>
+        </div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+    <div id="results-container"></div>
+    <section class="welcome-hero" id="home">
+        <video autoplay loop muted playsinline class="hero-video" id="welcome-bg">
+            <source src="" type="video/mp4">
+        </video>
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1>WELCOME TO OUR <br><span class="gold-text">our E-LIBRARY</span></h1>
+                <p>Explore countless stories, discover new knowldge and connect with reouces for sucted e-library.
+                </p>
+                <div class="hero-btns">
+                    <button class="btn-primary" onclick="document.getElementById('browse-library').scrollIntoView({behavior: 'smooth'})" >Start Reading</button>
+                    <button class="btn-outline"  onclick="document.getElementById('footer').scrollIntoView({behavior: 'smooth'})" >Explore Catalog</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--browse BOOK-->
+    <section id="browse-library" class="library-section">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <h1 class="main-title">Academic Resources</h1>
+            </div>
+            <div id="book-grid" class="book-grid">
+                <div class="loading-state">Loading your library...</div>
+            </div>
+        </div>
+    </section>
+    <!--about -->>
+    <section class="about-section" id="about-section">
+        <div class="about-header">
+            <h1>About Our E-Library</h1>
+            <div class="underline"></div>
+        </div>
+        <div class="about-content">
+            <p>
+                What began as a digital initiative to provide accessible knowledge for all has grown into a premier repository of scholarly resources, serving a vast community of students and researchers across a wide variety of categories. Driven by user-centric design and open-access principles, our platform remains a leader in digital preservation and intellectual growth. This mission reflects our unwavering commitment to fostering a world where information is always within reach for everyone
+            </p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card collection-card">
+                <div class="card-overlay">
+                    <h2>Our Collection</h2>
+                    <button class="btn-explore"  onclick="document.getElementById('browse-library').scrollIntoView({behavior: 'smooth'})">
+                        <span class="icon" ></span> Browse
+                    </button>
+                </div>
+            </div>
+            <div class="feature-card stats-card">
+                <div class="card-overlay">
+                    <h2>Knowledge Facts</h2>
+                    <div class="map-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer" id="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>LATEST RELEASES</h3>
+                <ul>
+                    <li><a href="#">The Digital Frontier, Fiction</a></li>
+                    <li><a href="#">Quantum Physics Vol. 4, Science</a></li>
+                    <li><a href="#">Modern Architecture, Design</a></li>
+                    <li><a href="#">History of the Silk Road, History</a></li>
+                    <li><a href="#">Python for Beginners, Tech</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>EXPLORE</h3>
+                <ul>
+                    <li><a href="#">folk</a></li>
+                    <li><a href="#">hisory</a></li>
+                    <li><a href="#">fiction</a></li>
+                    <li><a href="#">technology</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>GET IN TOUCH</h3>
+                <p>0121 555 0199</p>
+                <p><a href="mailto:support@elibrary.com">support@elibrary.com</a></p>
+                <p><a href="#">LinkedIn</a></p>
+                <p class="address">
+                    E-Library <br>
+                    Jimma, merkato
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 E-Library </p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+    <script src="javaScript/app.js"></script>
+</body>
+</html>

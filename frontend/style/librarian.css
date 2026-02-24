@@ -1,0 +1,819 @@
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-dark: #1d4ed8; /* fixed missing variable */
+  --bg-main: #f8fafc;
+  --sidebar-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --white: #ffffff;
+  --border: #e2e8f0;
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Global Reset --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+
+/* --- Header Styling --- */
+
+/* --- Header Styling --- */
+.main-header {
+  height: 70px;
+  background: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  box-shadow: var(--shadow-sm);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: var(--primary);
+}
+
+/* --- Hamburger Menu --- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger span {
+  width: 100%;
+  height: 3px;
+  background-color: var(--text-main);
+  border-radius: 10px;
+  transition: var(--transition);
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  width: 260px;
+  background: var(--sidebar-bg);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 85px;
+  border-right: 1px solid var(--border);
+  z-index: 900;
+  transition: var(--transition);
+}
+
+.menu-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  margin: 1.5rem 0 0.5rem 1.5rem;
+}
+
+.nav-links {
+  list-style: none;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 1.5rem;
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  margin: 4px 12px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.nav-item i {
+  font-size: 1.1rem;
+  width: 20px;
+}
+
+.nav-item:hover {
+  background: #eff6ff;
+  color: var(--primary);
+}
+
+.nav-item.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.delete-link:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* --- Main Content & Centering Strategy --- */
+.main-content {
+  margin-left: 260px;
+  /* Offset for sidebar */
+  padding: 100px 2rem 40px;
+  display: flex;
+  justify-content: center;
+  /* Horizontally center the container */
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  /* Professional readable width */
+}
+
+/* --- Section Cards --- */
+#dashboard-home,
+#profile-section {
+  background: var(--white);
+  padding: 4rem 2rem;
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--text-main);
+}
+
+#welcome-name {
+  color: var(--primary);
+}
+
+/* --- Profile Card Details --- */
+.profile-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: var(--text-main);
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  background: #f8fafc;
+  padding: 2.5rem;
+  border-radius: 16px;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.profile-info p {
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.profile-info span {
+  display: block;
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 1.1rem;
+}
+
+.role-badge {
+  display: inline-block;
+  background: #dbeafe;
+  color: var(--primary-dark);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* --- Profile Dropdown --- */
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: var(--white);
+  min-width: 220px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  padding: 8px;
+  display: none;
+  /* Controlled by JS */
+  flex-direction: column;
+}
+
+.dropdown-menu.show {
+  display: flex;
+  animation: slideIn 0.2s ease;
+}
+
+.dropdown-menu a {
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropdown-menu a:hover {
+  background: #f1f5f9;
+}
+
+.dropdown-menu hr {
+  margin: 8px 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* --- Mobile Responsiveness & Hamburger --- */
+@media (max-width: 1024px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .sidebar {
+    left: -260px;
+    /* Hide sidebar */
+  }
+
+  .sidebar.open {
+    left: 0;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 850;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* add book */
+/* --- Professional Form Layout --- */
+.professional-form {
+  margin-top: 2.5rem;
+  text-align: left;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.full-row {
+  grid-column: span 2;
+}
+
+.input-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.input-field input,
+.input-field textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fcfcfc;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.input-field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  outline: none;
+}
+
+/* --- Drop Zone Styling --- */
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  position: relative;
+  text-align: center;
+  background: #f8fafc;
+  transition: var(--transition);
+}
+
+.drop-zone:hover {
+  border-color: var(--primary);
+  background: #eff6ff;
+}
+
+.drop-zone input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.drop-zone-text i {
+  font-size: 1.5rem;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.drop-zone-text span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* --- Action Button --- */
+.submit-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.submit-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+/* ==========================================================================
+   1. TABLE SECTION STYLING
+   ========================================================================== */
+.table-container {
+    margin-top: 2rem;
+    overflow-x: auto; /* Enables horizontal scroll on small screens */
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.pro-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    min-width: 600px; /* Ensures table doesn't look squashed */
+}
+
+.pro-table th {
+    background: #f8fafc;
+    padding: 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+    border-bottom: 2px solid var(--border);
+}
+
+.pro-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.pro-table tr {
+    transition: all 0.3s ease;
+}
+
+.pro-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* --- Table Utilities --- */
+.format-badge {
+    background: #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.text-center { 
+    text-align: center; 
+    padding: 2rem !important; 
+}
+
+.error-msg {
+    color: #dc2626;
+    background: #fef2f2;
+    text-align: center;
+    padding: 1rem !important;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   2. ACTION BUTTONS
+   ========================================================================== */
+.action-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.btn-view { color: var(--primary); }
+
+.btn-delete { color: #ef4444; }
+
+.btn-icon:hover { 
+    background: #f1f5f9; 
+}
+
+.btn-delete:hover {
+    color: #ef4444 !important;
+    background-color: #fee2e2 !important;
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   3. EDIT PANEL STYLING (INLINE CARD)
+   ========================================================================== */
+.edit-card-inline {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.edit-id-badge {
+    font-size: 0.7rem;
+    background: #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #64748b;
+}
+
+.edit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.input-box label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.input-box input, 
+.input-box select, 
+.input-box textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.btn-cancel {
+    background: #cbd5e1;
+    color: #1e293b;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-cancel:hover {
+    background: #94a3b8;
+}
+
+/* ==========================================================================
+   4. RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+/* Tablets and small desktops */
+@media (max-width: 768px) {
+    .table-container {
+        padding: 5px;
+    }
+
+    .edit-grid {
+        grid-template-columns: 1fr; /* Stack inputs */
+    }
+
+    .edit-actions {
+        flex-direction: column;
+    }
+
+    .edit-actions button {
+        width: 100%;
+    }
+
+    /* Hide Format and Date on medium screens to prevent horizontal overflow */
+    .pro-table th:nth-child(4), 
+    .pro-table td:nth-child(4),
+    .pro-table th:nth-child(5), 
+    .pro-table td:nth-child(5) {
+        display: none;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 480px) {
+    .section-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .edit-header h3 {
+        font-size: 1rem;
+    }
+
+    /* Also hide Category on very small phones */
+    .pro-table th:nth-child(3), 
+    .pro-table td:nth-child(3) {
+        display: none;
+    }
+}
+/* ==========================================================================
+   CATEGORY MANAGEMENT (SEPARATE SECTIONS)
+   ========================================================================== */
+
+/* --- Section Shared Styles --- */
+.center-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* --- CREATE SECTION (Form) --- */
+#category-section .pro-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#category-section .input-box label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+#category-section .input-box input, 
+#category-section .input-box textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+/* --- VIEW SECTION (Table) --- */
+#view-categories-section .table-container {
+    margin-top: 1.5rem;
+    overflow-x: auto;
+}
+
+.cat-name-cell {
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.cat-description-cell {
+    max-width: 400px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* Delete Button Style */
+.btn-delete-cat {
+    background: #fff1f2;
+    color: #e11d48;
+    border: 1px solid #fecdd3;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-delete-cat:hover {
+    background: #e11d48;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Empty/Loading States */
+.empty-cat-msg {
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
+}
+/* ==========================================================================
+   CATALOG MANAGEMENT STYLES
+   ========================================================================== */
+
+/* Grid Layout for Form Fields */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Individual Field Styling */
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-field label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.input-field input {
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+}
+
+.input-field input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* Submit Button for Catalog */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.submit-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Feedback Messages */
+.feedback-msg {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    min-height: 1.2rem;
+    text-align: center;
+}
+
+/* Section Header Enhancements */
+.section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.welcome-icon {
+    width: 60px;
+    height: 60px;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+}
+
+/* Tablet/Mobile Adjustments */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

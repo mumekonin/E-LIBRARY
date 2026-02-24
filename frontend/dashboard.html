@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E Library | Digital Archive</title>
+  <link rel="stylesheet" href="style/dashboard.css">
+</head>
+<body>
+<nav>
+    <div class="logo-container">
+        <video autoplay loop muted playsinline class="nav-video">
+            <source src="http://localhost:3000/uploads/system/logo.mp4" type="video/mp4">
+        </video>
+        <span>E <span class="accent">Library</span></span>
+    </div>
+    <div class="nav-links" id="nav-links">
+        <a href="#home">Home</a>
+        <a href="#browse-library">Browse Books</a>
+        <a href="#catagory">Catagory</a>
+        <a href="#borrow">borrow</a>
+        <a href="#return">return</a>
+    </div>
+<div class="user-profile-group">
+    <div class="user-menu-container" id="user-menu-trigger">
+        <div class="user-avatar" id="user-initials">--</div>
+        <div class="user-details">
+            <span id="user-full-name" class="user-name">Loading...</span>
+            <span id="user-role-badge" class="role-badge">Role</span>
+        </div>
+        <i class="arrow-down">▼</i> <div class="profile-dropdown" id="profile-dropdown">
+            <button onclick="openUpdateModal()" class="dropdown-item">
+                <span class="icon">⚙️</span> Update Profile
+            </button>
+            <div class="dropdown-divider"></div>
+            <button id="logout-btn" class="dropdown-item logout-red">
+                <span class="icon">🚪</span> Logout
+            </button>
+        </div>
+    </div>
+</div>
+<div id="profile-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Update Profile</h3>
+            <span class="close-modal" onclick="closeUpdateModal()">&times;</span>
+        </div>
+        <form id="update-profile-form">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" id="edit-firstName" required>
+                </div>
+                <div class="input-group">
+                    <label>Last Name</label>
+                    <input type="text" id="edit-lastName" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="edit-username" required>
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="edit-email" required>
+            </div>
+            <button type="submit" class="btn-update-submit">Save Changes</button>
+            <p id="update-status-msg"></p>
+        </form>
+    </div>
+</div>
+    <div class="menu-toggle" id="mobile-menu">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+<main class="lib-hero-wrapper">
+    <section class="lib-hero-container">
+        <div class="lib-hero-text">
+            <h1 class="lib-hero-title">
+                Think Like <br>
+                <span class="lib-hero-highlight">an Expert</span>
+            </h1>
+            <p class="lib-hero-subtitle">
+               Discover how to apply yourself and succeed at your goals using our extensive repository of digital knowledge, available to you nowy.
+            </p>     
+            <div class="lib-hero-btns">
+                <button class="lib-btn-borrow" onclick="document.getElementById('borrow').scrollIntoView({behavior: 'smooth'})">Borrow Now</button>
+            </div>
+            <div class="lib-hero-footer">
+                <p>Download and read these formats:</p>
+                <div class="lib-format-list">
+                    <span>PDF</span>
+                    <span>EPUB</span>
+                    <span>AUDIO</span>
+                </div>
+            </div>
+        </div>
+        <div class="lib-hero-visual">
+            <div class="lib-book-box">
+                <img src="https://media.gettyimages.com/id/535515203/vector/colorful-book.jpg?s=1024x1024&w=gi&k=20&c=pZOexr-9x3kXml3KtayXM9ssjioI4-qjsFtspfq-K5Q=" alt="Think Like an Expert" class="lib-main-book">
+                <div class="lib-book-reflection"></div>
+            </div>
+        </div>
+    </section>
+  </main>
+  <!--search section-->
+<section class="lib-hero-search">
+    <div class="hero-overlay">
+        <div class="search-wrap">
+            <h1 class="hero-title">Academic books</h1>
+            <p class="hero-subtitle">Explore our vast collection of scholarly resources</p> 
+            <div class="search-input-group">
+                <i class="fas fa-search input-icon"></i>
+                <input type="text" id="lib-search-input" placeholder="Type title or author..." autocomplete="off">
+                <button id="lib-search-btn">Search</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="results-wrapper" class="container results-hidden">
+    <div class="results-header">
+        <h2 id="results-count">Search Results</h2>
+        <button class="clear-btn" id="clear-search-link">Clear all</button>
+    </div>
+    <div id="search-grid" class="book-grid">
+        </div>
+</section>
+<!--browse section-->
+<section class="container" id="browse-library">
+    <div id="search-results-grid" class="book-grid">
+        </div>
+</section>
+<section class="featured-section">
+    <div class="container">
+        <h1 class="section-title">Browse book</h1>
+        <div id="book-grid" class="book-grid"></div>
+    </div>
+</section>
+<!-- all catagory -->
+ <header class="subject-portal-header">
+    <div class="header-inner">
+        <h1 class="portal-main-title">Primary School: Grades 1-8</h1>
+        <p class="portal-tagline">Ethiopian General Education Curriculum Subjects</p>
+    </div>
+</header>
+<main class="subject-portal-container" id="catagory">
+    <div id="subject-display-grid" class="subject-portal-grid">
+        </div>
+</main>
+<!-- catalog section -->
+<section class="lib-portal" id="borrow">
+    <div class="lib-container">
+        <header class="lib-hero-content">
+            <h1>Nexus <span>Digital Library</span></h1>
+            <p class="lib-description">Access the central catalog of physical and digital assets. Secure JWT Session active.</p>
+            
+            <div class="lib-search-pill">
+                <input type="text" id="searchInput" placeholder="Search by title, author, or keyword...">
+                <button id="searchBtn">Initialize Search</button>
+            </div>
+
+            <div class="lib-quick-filters">
+                <span onclick="quickSearch('Technology')">Technology</span>
+                <span onclick="quickSearch('Science')">Science</span>
+                <span onclick="quickSearch('Literature')">Literature</span>
+                <span onclick="quickSearch('Engineering')">Engineering</span>
+            </div>
+        </header>
+
+        <div id="resultsWrapper" class="lib-grid"></div>
+    </div>
+</section>
+<div id="borrowModal" class="modal-overlay">
+    <div class="modal-contentt">
+        <h2>Confirm Borrow</h2>
+        <p id="modalBookTitle"></p>
+        <input type="hidden" id="selectedBookId">
+        
+        <label>Expected Return Date:</label>
+        <input type="date" id="returnDate">
+        
+        <div class="modal-footer">
+            <button onclick="closeModal()" class="btn-cancel">Cancel</button>
+            <button id="confirmBorrowBtn" class="btn-confirm">Confirm</button>
+        </div>
+    </div>
+</div>
+<div class="dashboard-viewport" id="return">
+    <section id="loan-management-panel" class="loan-registry">
+        
+        <div class="registry-header">
+            <div class="registry-info">
+                <h2 class="registry-title">Active Book Loans</h2>
+                <p class="registry-subtitle">Manage your current subscriptions</p>
+            </div>
+            <div class="registry-actions">
+                <input type="text" id="loanSearch" placeholder="Search by title..." onkeyup="filterLoans()">
+                <span class="registry-count" id="loan-count">0 Items</span>
+            </div>
+        </div>
+
+        <div id="loan-status-alert" class="registry-alert" style="display: none;"></div>
+
+        <div class="registry-table-wrapper">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Book Information</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="loan-list-body">
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="loan-loader" class="registry-loader">
+            <div class="pulse-ring"></div>
+            <span>Syncing Database...</span>
+        </div>
+    </section>
+</div>
+<footer class="nexus-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <span>E <span class="accent">Library</span></span>
+            </div>
+            <p>Empowering the Ethiopian general education curriculum through seamless digital access to academic resources.</p>
+            <div class="social-links">
+                <a href="#">FB</a> <a href="#">X</a> <a href="#">LI</a> <a href="#">IG</a>
+            </div>
+        </div>
+
+        <div class="footer-links-group">
+            <h4>Quick Navigation</h4>
+            <ul>
+                <li><a href="#home">Home Dashboard</a></li>
+                <li><a href="#browse-library">Catalog Search</a></li>
+                <li><a href="#catagory">Subject Portal</a></li>
+                <li><a href="#loan-management-panel">My Active Loans</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Support Hub</h4>
+            <p>📧 support@nexus-library.edu</p>
+            <p>📞 +251 911 000 000</p>
+            <p>📍 Addis Ababa, Ethiopia</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Nexus Digital Library. | <span>Secure JWT Encrypted Session</span></p>
+    </div>
+</footer>
+  <script src="javaScript/dashboard.js"></script>
+</body>
+</html>

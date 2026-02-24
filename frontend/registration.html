@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Registration</title>
+    <link rel="stylesheet" href="style/registration.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="form-side">
+            <div class="form-wrapper">
+                <h1>Create an account</h1>
+                <p class="subtitle">Join our library community today</p>
+                <form id="registerForm">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>First name</label>
+                            <input type="text" id="firstname" placeholder="Jane" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Last name</label>
+                            <input type="text" id="lastname" placeholder="Doe" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" id="username" placeholder="janedoe123" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="jane@example.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" placeholder="••••••••••••" required>
+                            <span class="eye-icon">👁</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit</button>
+                   <a href="login.html" style="text-decoration: none; width: 100%;">
+    <button type="button" class="login-btn">login</button>
+</a>
+                </form>
+            </div>
+        </div>
+        <div class="image-side">
+            <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=1000" alt="Library">
+            <div class="overlay-card">
+                <h3>Library Daily Schedule</h3>
+                <p>Reading Room: 09:00am - 08:00pm</p>
+            </div>
+        </div>
+    </div>
+    <script src="javaScript/registration.js"></script>
+</body>
+</html>
