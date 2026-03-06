@@ -1,82 +1,80 @@
-📚 Library System
+# 📚 E-Library — Digital Library System
 
-A full-stack digital library system that allows users to manage books, borrow and return physical copies, and read e-books online. The system combines a frontend built with HTML, CSS, and JavaScript with a backend using NestJS, MongoDB, and a RESTful API.
+A full-stack digital library system where users can manage books, borrow and return physical copies, and read or download e-books online.
 
-🌟 Features
+---
 
-Book Management
+## 🌟 Features
 
-         Add, remove, and update books
-      
-        Track availability of physical and digital copies
+**📖 Book Management**
+- Add, update, and remove books
+- Track availability of both physical and digital copies
 
-User Management
+**👤 User Management**
+- Registration and authentication
+- Role-based access control (Admin / Member)
 
-        Registration and authentication (handled by backend)
-      
-        Role-based access control (Admin / Member)
+**🔄 Borrowing & Returning**
+- Borrow and return physical books
+- Automatic due date tracking and book status updates
 
-Borrowing & Returning
-      
-        Borrow and return physical books
-      
-        Automatic tracking of due dates and book status
+**💻 Digital Library**
+- Read e-books online without downloading
+- Download e-books for offline reading
 
-Digital Library Access
+**🔍 Search & Filter**
+- Search books by title, author, or category
+- View full borrowing history per user
 
-         Download e-books for offline reading
-      
-         Read books online without downloading
+**📱 Responsive UI**
+- Fully responsive on desktop and mobile
 
-Search & Filter
+---
 
-        Search books by title, author, or category
-      
-         Maintain borrowing history for users
+## 🛠️ Tech Stack
 
-Responsive UI
+| Layer | Technology |
+|-------|-----------|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | NestJS |
+| Database | MongoDB + Mongoose |
+| Auth | JWT + Role-Based Access Control |
+| API | RESTful API |
 
-         on both desktop and mobile devices
+---
 
-🛠 Technology Stack
-        
-        Frontend: HTML, CSS, JavaScript
-        
-        Backend: NestJS, MongoDB (Mongoose), REST API
-        
-        Authentication & Authorization: JWT and Role-Based Access Control
+## 📂 Project Structure
 
+```
+E-Library/
+├── frontend/     # UI built with HTML, CSS, and JavaScript
+└── backend/      # API server with NestJS, MongoDB, JWT, and RBAC
+```
 
-🚀 Getting Started
-1. Clone the Repository
-        git clone https://github.com/your-username/E-Library.git
-        cd library-system
-2. Backend Setup
+> Each folder contains its own README with detailed setup instructions.
 
-Navigate to backend/
+---
 
-Install dependencies
+## 🚀 Getting Started
 
-      npm install
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/E-Library.git
+cd E-Library
+```
 
-      Configure environment variables (.env) for MongoDB and JWT
+### 2. Backend Setup
+```bash
+cd backend
+npm install
+# Add your .env file with MongoDB URI and JWT secret
+npm run start:dev
+```
 
-Start the server:
-
-      npm run start:dev
-3. Frontend Setup
-
-    Navigate to frontend/
-    
-    Open index.html in your web browser
-    
-    Ensure the backend server is running to handle API requests
-
-📂 Repository Structure
-
-        frontend/ — User interface built with HTML, CSS, and JS
-        
-        backend/ — API server with NestJS, MongoDB, JWT, and RBAC
-        
-        Each folder contains its own README with detailed setup instructions.
+### 3. Frontend Setup
+```bash
+cd frontend
+# Open index.html with Live Server or any static server
+# Make sure the backend is running first
+```
 
